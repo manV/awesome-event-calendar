@@ -1,8 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import { storiesOf } from '@storybook/react';
-import Index from '../index';
+import Calendar from '..';
+
 
 storiesOf('Calendar', module)
   .add('default', () => (
-    <Index color="red" />
+    <Calendar />
   ));
