@@ -128,6 +128,7 @@ export const fillDataWithFakeEvents = (
         // compare with calendar start date if starting after then add fakediv
         const diff = calendarStartDate.diff(event.startDate, 'days');
         const startDateForWidth = event.startDate.isBefore(calendarStartDate) ? calendarStartDate : event.startDate;
+        const endDateForWidth = event.endDate.isBefore(calendarEndDate) ? event.endDate : calendarEndDate;
         if (diff < 0) {
           // add fake div
           result[i].push({
@@ -141,7 +142,7 @@ export const fillDataWithFakeEvents = (
           result[i].push({
             startDate: event.startDate,
             endDate: event.endDate,
-            width: Math.abs(startDateForWidth.diff(event.endDate, 'days')) * dayWidth,
+            width: Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) * dayWidth,
             isFake: false,
             clipLeft: false,
             clipRight: event.endDate.diff(calendarEndDate, 'days') <= 0
@@ -150,7 +151,7 @@ export const fillDataWithFakeEvents = (
           result[i].push({
             startDate: event.startDate,
             endDate: event.endDate,
-            width: Math.abs(event.startDate.diff(event.endDate, 'days')) * dayWidth,
+            width: Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) * dayWidth,
             isFake: false,
             clipLeft: true,
             clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0

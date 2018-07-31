@@ -123,7 +123,7 @@ describe('utils::groupNonConflictingEvents', () => {
 });
 
 describe('utils::fillDataWithFakeEvents', () => {
-  it('case 1', () => {
+  it('should work when there is only one event starting at calendar start date', () => {
     expect(fillDataWithFakeEvents(
       moment.utc('2018-07-01', 'YYYY-MM-DD'),
       moment.utc('2018-09-06', 'YYYY-MM-DD'),
@@ -133,9 +133,19 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-07', 'YYYY-MM-DD')
         }]
       ]
-    )).toEqual({});
+    )).toEqual([
+      [
+        {
+          clipLeft: true, clipRight: false,
+          endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
+          isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          width: 8.955223880597016
+        }
+      ]
+    ]);
   });
-  it('case 2', () => {
+  it('should work when there is only one event starting at calendar ' +
+  'start date and ending at calendar end date', () => {
     expect(fillDataWithFakeEvents(
       moment.utc('2018-07-01', 'YYYY-MM-DD'),
       moment.utc('2018-09-06', 'YYYY-MM-DD'),
@@ -145,24 +155,161 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-09-06', 'YYYY-MM-DD')
         }]
       ]
-    )).toEqual({});
+    )).toEqual([
+      [
+        {
+          clipLeft: true, clipRight: true,
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
+          isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          width: 100
+        }
+      ]
+    ]);
   });
-  it('case 3', () => {
+  it('should work when there is only one event starting before calendar ' +
+  'start date and ending at calendar end date', () => {
+    expect(fillDataWithFakeEvents(
+      moment.utc('2018-07-01', 'YYYY-MM-DD'),
+      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      [
+        [{
+          startDate: moment.utc('2018-06-25', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD')
+        }]
+      ]
+    )).toEqual([
+      [
+        {
+          clipLeft: true, clipRight: true,
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
+          isFake: false, startDate: moment.utc('2018-06-25', 'YYYY-MM-DD'),
+          width: 100
+        }
+      ]
+    ]);
+  });
+  it('should work when there is only one event starting at calendar ' +
+  'start date and ending after calendar end date', () => {
     expect(fillDataWithFakeEvents(
       moment.utc('2018-07-01', 'YYYY-MM-DD'),
       moment.utc('2018-09-06', 'YYYY-MM-DD'),
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-07-05', 'YYYY-MM-DD')
-        }, {
-          startDate: moment.utc('2018-07-08', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-07-10', 'YYYY-MM-DD')
-        }, {
-          startDate: moment.utc('2018-09-01', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-09-20', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-09-16', 'YYYY-MM-DD')
         }]
       ]
-    )).toEqual({});
+    )).toEqual([
+      [
+        {
+          clipLeft: true, clipRight: true,
+          endDate: moment.utc('2018-09-16', 'YYYY-MM-DD'),
+          isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          width: 100
+        }
+      ]
+    ]);
+  });
+  it('should fill rows with fake events correctly', () => {
+    expect(fillDataWithFakeEvents(
+      moment.utc('2018-07-01', 'YYYY-MM-DD'),
+      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      [
+        [{
+          startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-07-16', 'YYYY-MM-DD')
+        }, {
+          startDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-08-16', 'YYYY-MM-DD')
+        }, {
+          startDate: moment.utc('2018-08-17', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD')
+        }],
+        [{
+          startDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-07-20', 'YYYY-MM-DD')
+        }, {
+          startDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-08-20', 'YYYY-MM-DD')
+        }]
+      ]
+    )).toEqual([
+      [
+        {
+          clipLeft: true,
+          clipRight: false,
+          endDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
+          isFake: false,
+          startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          width: 22.388059701492537
+        },
+        {
+          clipLeft: false,
+          clipRight: false,
+          endDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
+          isFake: true,
+          startDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
+          width: 13.432835820895523
+        },
+        {
+          clipLeft: false,
+          clipRight: false,
+          endDate: moment.utc('2018-08-16', 'YYYY-MM-DD'),
+          isFake: false,
+          startDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
+          width: 32.83582089552239
+        },
+        {
+          clipLeft: false,
+          clipRight: false,
+          endDate: moment.utc('2018-08-17', 'YYYY-MM-DD'),
+          isFake: true,
+          startDate: moment.utc('2018-08-16', 'YYYY-MM-DD'),
+          width: 1.492537313432836
+        },
+        {
+          clipLeft: false,
+          clipRight: true,
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
+          isFake: false,
+          startDate: moment.utc('2018-08-17', 'YYYY-MM-DD'),
+          width: 29.850746268656717
+        }
+      ],
+      [
+        {
+          clipLeft: false,
+          clipRight: false,
+          endDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
+          isFake: true,
+          startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          width: 1.492537313432836
+        },
+        {
+          clipLeft: false,
+          clipRight: true,
+          endDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
+          isFake: false,
+          startDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
+          width: 26.865671641791046
+        },
+        {
+          clipLeft: false,
+          clipRight: false,
+          endDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
+          isFake: true,
+          startDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
+          width: 4.477611940298508
+        },
+        {
+          clipLeft: false,
+          clipRight: false,
+          endDate: moment.utc('2018-08-20', 'YYYY-MM-DD'),
+          isFake: false,
+          startDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
+          width: 41.791044776119406
+        }
+      ]
+    ]);
   });
 });
