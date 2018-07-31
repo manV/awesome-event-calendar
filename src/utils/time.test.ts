@@ -125,8 +125,8 @@ describe('utils::groupNonConflictingEvents', () => {
 describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting at calendar start date', () => {
     expect(fillDataWithFakeEvents(
-      moment.utc('2018-07-01', 'YYYY-MM-DD'),
-      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      '2018-07-01',
+      '2018-09-06',
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
@@ -147,8 +147,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting at calendar ' +
   'start date and ending at calendar end date', () => {
     expect(fillDataWithFakeEvents(
-      moment.utc('2018-07-01', 'YYYY-MM-DD'),
-      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      '2018-07-01',
+      '2018-09-06',
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
@@ -169,8 +169,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting before calendar ' +
   'start date and ending at calendar end date', () => {
     expect(fillDataWithFakeEvents(
-      moment.utc('2018-07-01', 'YYYY-MM-DD'),
-      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      '2018-07-01',
+      '2018-09-06',
       [
         [{
           startDate: moment.utc('2018-06-25', 'YYYY-MM-DD'),
@@ -191,8 +191,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting at calendar ' +
   'start date and ending after calendar end date', () => {
     expect(fillDataWithFakeEvents(
-      moment.utc('2018-07-01', 'YYYY-MM-DD'),
-      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      '2018-07-01',
+      '2018-09-06',
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
@@ -212,8 +212,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   });
   it('should fill rows with fake events correctly', () => {
     expect(fillDataWithFakeEvents(
-      moment.utc('2018-07-01', 'YYYY-MM-DD'),
-      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      '2018-07-01',
+      '2018-09-06',
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),

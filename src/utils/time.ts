@@ -97,8 +97,8 @@ export const groupNonConflictingEvents = (data: Array<{
 };
 
 export const fillDataWithFakeEvents = (
-  calendarStartDate: moment.Moment,
-  calendarEndDate: moment.Moment,
+  calendarStartDateStr: string,
+  calendarEndDateStr: string,
   data: Array<Array<{
     startDate: moment.Moment
     endDate: moment.Moment
@@ -111,6 +111,8 @@ export const fillDataWithFakeEvents = (
   clipRight: boolean;
   clipLeft: boolean;
 }>> => {
+  const calendarStartDate = moment.utc(calendarStartDateStr, dateFormatter);
+  const calendarEndDate = moment.utc(calendarEndDateStr, dateFormatter);
   const dayWidth = 100 / Math.abs(calendarStartDate.diff(calendarEndDate, 'days'));
   const result: Array<Array<{
     startDate: moment.Moment;
