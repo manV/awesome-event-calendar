@@ -82,6 +82,7 @@ export const groupNonConflictingEvents = (data: Array<{
           startDate: eventStartDate,
           endDate: eventEndDate
         });
+        break;
       }
     }
 
