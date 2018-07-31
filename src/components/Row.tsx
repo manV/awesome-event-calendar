@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from './../styled';
 import { Moment } from 'moment';
+import { groupNonConflictingEvents, fillDataWithFakeEvents } from '../utils/time';
 import {
   IRowProps
 } from '../types';
@@ -24,9 +25,10 @@ const BgWrapper = styled.div`
   width: 100%;
 `;
 
-const ContentWrapper = styled.div`
+const RowContent = styled.div`
   position: relative;
   display: flex;
+  flex-direction: column;
 `;
 
 const CellWrapper = styled.div`
@@ -45,8 +47,14 @@ const CellWrapper = styled.div`
   border-bottom: 1px solid #ddd;
 `;
 
-const Content = styled.div`
-  /* background-color: cyan; */
+const Row = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`;
+const RowSegment = styled.div`
+  background-color: red;
 `;
 
 const Cell = (props: {
@@ -104,10 +112,32 @@ export default class Header extends React.Component<IRowProps, {
               })
             }
           </BgWrapper>
-          <ContentWrapper style={{width: '100%'}}>
-            <Content style={{marginLeft: '50%', width: '20%', backgroundColor: 'red'}}>shit</Content>
-            <Content style={{marginLeft: '20%', width: '10%', backgroundColor: 'red'}}>shit</Content>
-          </ContentWrapper>
+          <RowContent style={{width: '100%'}}>
+            {
+              this.props.data ? fillDataWithFakeEvents(
+                this.props.startDate,
+                this.props.endDate,
+                groupNonConflictingEvents(this.props.data)
+              ).map((rowData) => {
+                return (
+                  <Row>
+                    {
+                      rowData.map((segmentData) => {
+                        return (
+                          <RowSegment style={{
+                            flexBasis: `${segmentData.width}%`,
+                            maxWidth: `${segmentData.width}%`,
+                            backgroundColor: `${segmentData.isFake ? 'green' : 'red'}`
+                          }}>{segmentData.isFake ? ' ' : 'data'}</RowSegment>
+                        );
+                      })
+                    }
+                  </Row>
+                );
+              })
+              : null
+            }
+          </RowContent>
         </RowBodyWrapper>
       </RowWrapper>
     );
