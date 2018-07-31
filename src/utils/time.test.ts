@@ -1,11 +1,16 @@
 import {
   getNumberOfWeeksBetweenDates,
-  getStartAndEndDates
+  getStartAndEndDates,
+  getColumnWeekStartAndEndDates,
+  groupNonConflictingEvents,
+  fillDataWithFakeEvents
 } from './time';
+
+import * as moment from 'moment';
 
 import {
   CalendarDefaultViewEnum
-} from './../types';
+} from '../types';
 
 describe('utils::getNumberOfWeeksBetweenDates', () => {
   test('should return valid number of weeks between dates with one week', () => {
@@ -45,5 +50,119 @@ describe('utils::getStartAndEndDates', () => {
     expect(() => {
       getStartAndEndDates(3, 2018, CalendarDefaultViewEnum.day);
     }).toThrow();
+  });
+});
+
+describe('utils::getColumnWeekStartAndEndDates', () => {
+  test('should return correct value', () => {
+    expect(getColumnWeekStartAndEndDates('2018-01-01', 5).map((r) => ({
+      startDate: r.startDate.toISOString(),
+      endDate: r.endDate.toISOString()
+    }))).toEqual([
+      {
+        endDate: '2018-01-06T00:00:00.000Z',
+        startDate: '2017-12-31T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-13T00:00:00.000Z',
+        startDate: '2018-01-07T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-20T00:00:00.000Z',
+        startDate: '2018-01-14T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-27T00:00:00.000Z',
+        startDate: '2018-01-21T00:00:00.000Z'
+      }, {
+        endDate: '2018-02-03T00:00:00.000Z',
+        startDate: '2018-01-28T00:00:00.000Z'
+      }]
+    );
+  });
+});
+
+describe('utils::groupNonConflictingEvents', () => {
+  // TODO add more tests
+  const convertResultToString = (result: any) => {
+    return result.map((lineArray: any) => {
+      return lineArray.map((event: any) => {
+        return {
+          startDate: event.startDate.toISOString(),
+          endDate: event.endDate.toISOString()
+        };
+      });
+    });
+  };
+  test('should return correct value in case of just one line', () => {
+    expect(convertResultToString(groupNonConflictingEvents([{
+      startDate: '2018-01-08',
+      endDate: '2018-01-12'
+    }, {
+      startDate: '2018-01-01',
+      endDate: '2018-01-07'
+    }]))).toEqual([
+      [
+        {endDate: '2018-01-07T00:00:00.000Z', startDate: '2018-01-01T00:00:00.000Z'},
+        {endDate: '2018-01-12T00:00:00.000Z', startDate: '2018-01-08T00:00:00.000Z'}
+      ]
+    ]);
+  });
+  test('should return correct value in case of just two line', () => {
+    expect(convertResultToString(groupNonConflictingEvents([{
+      startDate: '2018-01-01',
+      endDate: '2018-01-07'
+    }, {
+      startDate: '2018-01-07',
+      endDate: '2018-01-12'
+    }]))).toEqual([
+      [
+        {endDate: '2018-01-07T00:00:00.000Z', startDate: '2018-01-01T00:00:00.000Z'}
+      ], [
+        {endDate: '2018-01-12T00:00:00.000Z', startDate: '2018-01-07T00:00:00.000Z'}
+      ]
+    ]);
+  });
+});
+
+describe('utils::fillDataWithFakeEvents', () => {
+  it('case 1', () => {
+    expect(fillDataWithFakeEvents(
+      moment.utc('2018-07-01', 'YYYY-MM-DD'),
+      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      [
+        [{
+          startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-07-07', 'YYYY-MM-DD')
+        }]
+      ]
+    )).toEqual({});
+  });
+  it('case 2', () => {
+    expect(fillDataWithFakeEvents(
+      moment.utc('2018-07-01', 'YYYY-MM-DD'),
+      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      [
+        [{
+          startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD')
+        }]
+      ]
+    )).toEqual({});
+  });
+  it('case 3', () => {
+    expect(fillDataWithFakeEvents(
+      moment.utc('2018-07-01', 'YYYY-MM-DD'),
+      moment.utc('2018-09-06', 'YYYY-MM-DD'),
+      [
+        [{
+          startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-07-05', 'YYYY-MM-DD')
+        }, {
+          startDate: moment.utc('2018-07-08', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-07-10', 'YYYY-MM-DD')
+        }, {
+          startDate: moment.utc('2018-09-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-09-20', 'YYYY-MM-DD')
+        }]
+      ]
+    )).toEqual({});
   });
 });
