@@ -46,4 +46,4 @@ describe('utils::getStartAndEndDates', () => {
       getStartAndEndDates(3, 2018, CalendarDefaultViewEnum.day);
     }).toThrow();
   });
-})
+});

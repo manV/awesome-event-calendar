@@ -3,10 +3,10 @@ import { CalendarDefaultViewEnum } from './../types';
 
 export const dateFormatter = 'YYYY-MM-DD';
 
-export const getNumberOfWeeksBetweenDates = (startDate:string, endDate:string) => {
+export const getNumberOfWeeksBetweenDates = (startDate: string, endDate: string) => {
   const diffInDays = moment(endDate, dateFormatter).diff(moment(startDate, dateFormatter), 'days') + 1;
- return Math.ceil(diffInDays / 7);
-}
+  return Math.ceil(diffInDays / 7);
+};
 
 export const getStartAndEndDates = (month: number, year: number, defaultView: CalendarDefaultViewEnum): {
   startDate: string,
@@ -24,5 +24,5 @@ export const getStartAndEndDates = (month: number, year: number, defaultView: Ca
   return {
     startDate,
     endDate
-  }
+  };
 };

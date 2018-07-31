@@ -2,7 +2,7 @@ import * as React from 'react';
 import Header from './components/Header';
 import { getStartAndEndDates } from './utils/time';
 
-import { ICalendarProps, CalendarDefaultViewEnum } from './types'
+import { ICalendarProps, CalendarDefaultViewEnum } from './types';
 
 export default class Calendar extends React.Component<ICalendarProps, {}> {
   state = {
@@ -11,7 +11,7 @@ export default class Calendar extends React.Component<ICalendarProps, {}> {
     defaultView: this.props.defaultView || CalendarDefaultViewEnum.month,
     startMonth: this.props.startMonth || (new Date()).getMonth(),
     startYear: this.props.startYear || (new Date()).getFullYear()
-  }
+  };
   render() {
     const {
       startDate,

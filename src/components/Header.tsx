@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {
   IHeaderProps
-} from '../types'
+} from '../types';
 import { getNumberOfWeeksBetweenDates } from '../utils/time';
 
 const HeaderCell = (props: {
@@ -20,7 +20,7 @@ const HeaderCell = (props: {
 export default class Header extends React.Component<IHeaderProps, any> {
   state = {
     numberOfWeeks: getNumberOfWeeksBetweenDates(this.props.startDate, this.props.endDate)
-  }
+  };
   render() {
     const weekNumArray: number[] = [];
     for (let i = 1; i <= this.state.numberOfWeeks; i++) {
