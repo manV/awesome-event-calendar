@@ -17,6 +17,7 @@ export interface ICalendarProps {
   startMonth?: number;
   startYear?: number;
   data: IData;
+  headerColumnText?: string;
 }
 
 export interface ICalendarState {
@@ -43,7 +44,8 @@ export interface IRowProps {
     startDate: string;
     endDate: string;
   }>;
-  header: string;
+  headerColumnText?: string;
+  isHeader: boolean;
 }
 
 export interface IData {

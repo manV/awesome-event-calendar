@@ -60,18 +60,21 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
         <CalendarWrapper>
           {/* header */}
           <Row
+            headerColumnText={this.props.headerColumnText}
             headerColumnWidth={this.state.headerColumnWidth}
             bodyColumnWidth={this.state.bodyColumnWidth}
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             defaultView={this.state.defaultView}
             weekStartAndEndDates={this.state.weekStartAndEndDates}
-            header="TEST HEADER"
+            isHeader={true}
           />
           {/* body */}
           {
             Object.keys(this.props.data).map((key) => {
               return <Row
+                isHeader={false}
+                headerColumnText={key}
                 headerColumnWidth={this.state.headerColumnWidth}
                 bodyColumnWidth={this.state.bodyColumnWidth}
                 startDate={this.state.startDate}
@@ -79,7 +82,6 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
                 defaultView={this.state.defaultView}
                 weekStartAndEndDates={this.state.weekStartAndEndDates}
                 data={this.props.data[key]}
-                header={key}
                 key={key}
               />;
             })

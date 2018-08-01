@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import Calendar from '..';
-import { CalendarDefaultViewEnum } from './../types';
 
 storiesOf('Calendar', module)
   .add('default', () => (
     <Calendar data={{}}/>
   ))
   .add('with some data', () => (
-    <Calendar defaultView={CalendarDefaultViewEnum.quarter} startMonth={11} startYear={2017} data={{
+    <Calendar startMonth={11} startYear={2017} data={{
       'test': [{
         startDate: '2017-12-01',
         endDate: '2018-10-06'
@@ -25,7 +24,7 @@ storiesOf('Calendar', module)
         startDate: '2017-12-21',
         endDate: '2017-12-23'
       }],
-    'test 121212': [{
+    'test 1': [{
         startDate: '2017-12-01',
         endDate: '2018-10-06'
       }, {

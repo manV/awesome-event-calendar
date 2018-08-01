@@ -62,7 +62,9 @@ export default class Header extends React.Component<IRowProps, {
       <RowWrapper>
         <Cell
           width={this.state.headerCellWidth}
-          content={this.props.header}
+          index={-1}
+          headerColumnText={this.props.headerColumnText}
+          isHeader={this.props.isHeader}
         />
         <RowBodyWrapper style={{width: `${100 - this.state.headerCellWidth}%`}}>
           <BgWrapper>
@@ -71,6 +73,7 @@ export default class Header extends React.Component<IRowProps, {
                 return <Cell
                   index={index}
                   width={this.state.cellWidth}
+                  isHeader={this.props.isHeader}
                   startDate={startDate}
                   endDate={endDate}
                   key={index}
