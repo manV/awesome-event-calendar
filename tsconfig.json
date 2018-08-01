@@ -14,7 +14,6 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "typeRoots": [
       "index.d.ts",
       "node_modules/@types"
