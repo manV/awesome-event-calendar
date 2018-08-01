@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled from './../styled';
-import { Moment } from 'moment';
 import { groupNonConflictingEvents, fillDataWithFakeEvents } from '../utils/time';
 import {
   IRowProps
 } from '../types';
+import Cell from './Cell';
 
 const RowWrapper = styled.div`
   display: flex;
@@ -23,6 +23,7 @@ const BgWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 100%;
 `;
 
 const RowContent = styled.div`
@@ -31,53 +32,17 @@ const RowContent = styled.div`
   flex-direction: column;
 `;
 
-const CellWrapper = styled.div`
-  height: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  text-align: center;
-  box-sizing: border-box;
-  font-weight: 600;
-  &:not(:first-child) {
-    border-left: 1px solid #ddd;
-  }
-  &:first-child {
-    border-right: 1px solid #ddd;
-  }
-  border-bottom: 1px solid #ddd;
-`;
-
 const Row = styled.div`
   position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding: 5px 0;
 `;
 const RowSegment = styled.div`
   background-color: red;
+  padding: 8px 0;
 `;
-
-const Cell = (props: {
-  startDate?: Moment;
-  endDate?: Moment;
-  width: number;
-  index?: number;
-  content?: string;
-}) => {
-  return (
-    <CellWrapper style={{
-      width: `${props.width}%`
-    }}>
-      {
-        props.content || `${
-          props.startDate ? props.startDate.format('MM-DD') : ''
-        }<>${
-          props.endDate ? props.endDate.format('MM-DD') : ''
-        }`
-      }
-    </CellWrapper>
-  );
-};
 
 export default class Header extends React.Component<IRowProps, {
   headerCellWidth: number;
@@ -108,6 +73,7 @@ export default class Header extends React.Component<IRowProps, {
                   width={this.state.cellWidth}
                   startDate={startDate}
                   endDate={endDate}
+                  key={index}
                 />;
               })
             }
@@ -118,23 +84,27 @@ export default class Header extends React.Component<IRowProps, {
                 this.props.startDate,
                 this.props.endDate,
                 groupNonConflictingEvents(this.props.data)
-              ).map((rowData) => {
+              ).map((rowData, index) => {
                 return (
-                  <Row>
+                  <Row key={index}>
                     {
-                      rowData.map((segmentData) => {
+                      rowData.map((segmentData, i) => {
                         return (
-                          <RowSegment style={{
+                          <RowSegment key={i} style={{
                             flexBasis: `${segmentData.width}%`,
                             maxWidth: `${segmentData.width}%`,
-                            backgroundColor: `${segmentData.isFake ? 'green' : 'red'}`
+                            backgroundColor: `${segmentData.isFake ? 'transparent' : '#3174ad'}`,
+                            borderTopLeftRadius: `${segmentData.clipLeft ? '0' : '10px'}`,
+                            borderBottomLeftRadius: `${segmentData.clipLeft ? '0' : '10px'}`,
+                            borderTopRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
+                            borderBottomRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
                           }}>{
                             segmentData.isFake ?
-                              'test' :
+                              ' ' :
                               `${
-                                segmentData.startDate.format('MM-DD')
+                                segmentData.startDate.format('DD')
                               }<>${
-                                segmentData.endDate.format('MM-DD')
+                                segmentData.endDate.format('DD')
                               }`}
                           </RowSegment>
                         );

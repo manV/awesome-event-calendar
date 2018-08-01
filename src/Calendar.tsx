@@ -80,6 +80,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
                 weekStartAndEndDates={this.state.weekStartAndEndDates}
                 data={this.props.data[key]}
                 header={key}
+                key={key}
               />;
             })
           }

@@ -279,7 +279,7 @@ describe('utils::fillDataWithFakeEvents', () => {
         },
         {
           clipLeft: false,
-          clipRight: true,
+          clipRight: false,
           endDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
