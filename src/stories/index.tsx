@@ -7,23 +7,19 @@ storiesOf('Calendar', module)
     <Calendar data={{}}/>
   ))
   .add('with some data', () => (
-    <Calendar data={{
+    <Calendar startMonth={11} startYear={2017} data={{
       test: [{
-        startDate: '2018-07-01',
-        endDate: '2018-07-06'
+        startDate: '2017-12-01',
+        endDate: '2018-01-06'
       }, {
-        startDate: '2018-07-09',
-        endDate: '2018-07-16'
+        startDate: '2017-12-31',
+        endDate: '2017-12-31'
       }, {
-        startDate: '2018-07-15',
-        endDate: '2018-07-19'
+        startDate: '2017-12-10',
+        endDate: '2017-12-15'
       }, {
-        startDate: '2018-07-08',
-        endDate: '2018-08-04'
-      }],
-      test2: [{
-        startDate: '2018-07-01',
-        endDate: '2018-07-06'
+        startDate: '2017-12-17',
+        endDate: '2017-12-20'
       }]
     }} />
   ));

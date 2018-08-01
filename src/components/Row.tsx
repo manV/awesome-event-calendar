@@ -128,7 +128,15 @@ export default class Header extends React.Component<IRowProps, {
                             flexBasis: `${segmentData.width}%`,
                             maxWidth: `${segmentData.width}%`,
                             backgroundColor: `${segmentData.isFake ? 'green' : 'red'}`
-                          }}>{segmentData.isFake ? ' ' : 'data'}</RowSegment>
+                          }}>{
+                            segmentData.isFake ?
+                              'test' :
+                              `${
+                                segmentData.startDate.format('MM-DD')
+                              }<>${
+                                segmentData.endDate.format('MM-DD')
+                              }`}
+                          </RowSegment>
                         );
                       })
                     }

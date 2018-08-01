@@ -24,19 +24,19 @@ describe('utils::getNumberOfWeeksBetweenDates', () => {
 describe('utils::getStartAndEndDates', () => {
   test('should return valid start/end dates in case of month view 1', () => {
     expect(getStartAndEndDates(0, 2018, CalendarDefaultViewEnum.month)).toEqual({
-      startDate: '2018-01-01',
-      endDate: '2018-02-03'
+      endDate: '2018-02-03',
+      startDate: '2017-12-31'
     });
   });
   test('should return valid start/end dates in case of month view 2', () => {
     expect(getStartAndEndDates(1, 2018, CalendarDefaultViewEnum.month)).toEqual({
-      startDate: '2018-02-01',
+      startDate: '2018-01-28',
       endDate: '2018-03-03'
     });
   });
   test('should return valid start/end dates in case of quarter view 1', () => {
     expect(getStartAndEndDates(0, 2018, CalendarDefaultViewEnum.quarter)).toEqual({
-      startDate: '2018-01-01',
+      startDate: '2017-12-31',
       endDate: '2018-03-31'
     });
   });
@@ -139,7 +139,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           clipLeft: true, clipRight: false,
           endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 8.955223880597016
+          width: 10.294117647058824
         }
       ]
     ]);
@@ -241,7 +241,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 22.388059701492537
+          width: 23.529411764705884
         },
         {
           clipLeft: false,
@@ -249,7 +249,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
           isFake: true,
           startDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
-          width: 13.432835820895523
+          width: 11.764705882352942
         },
         {
           clipLeft: false,
@@ -257,15 +257,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-08-16', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
-          width: 32.83582089552239
-        },
-        {
-          clipLeft: false,
-          clipRight: false,
-          endDate: moment.utc('2018-08-17', 'YYYY-MM-DD'),
-          isFake: true,
-          startDate: moment.utc('2018-08-16', 'YYYY-MM-DD'),
-          width: 1.492537313432836
+          width: 33.82352941176471
         },
         {
           clipLeft: false,
@@ -273,7 +265,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-08-17', 'YYYY-MM-DD'),
-          width: 29.850746268656717
+          width: 30.88235294117647
         }
       ],
       [
@@ -283,7 +275,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
           isFake: true,
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 1.492537313432836
+          width: 1.4705882352941178
         },
         {
           clipLeft: false,
@@ -291,7 +283,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
-          width: 26.865671641791046
+          width: 27.94117647058824
         },
         {
           clipLeft: false,
@@ -299,7 +291,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
           isFake: true,
           startDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
-          width: 4.477611940298508
+          width: 2.9411764705882355
         },
         {
           clipLeft: false,
@@ -307,7 +299,7 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-08-20', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
-          width: 41.791044776119406
+          width: 42.64705882352941
         }
       ]
     ]);

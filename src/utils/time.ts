@@ -27,7 +27,7 @@ export const getStartAndEndDates = (month: number, year: number, defaultView: Ca
     throw new Error('This should never have happened.');
   }
   return {
-    startDate,
+    startDate: moment.utc(startDate, dateFormatter).startOf('week').format(dateFormatter),
     endDate
   };
 };
@@ -113,7 +113,7 @@ export const fillDataWithFakeEvents = (
 }>> => {
   const calendarStartDate = moment.utc(calendarStartDateStr, dateFormatter);
   const calendarEndDate = moment.utc(calendarEndDateStr, dateFormatter);
-  const dayWidth = 100 / Math.abs(calendarStartDate.diff(calendarEndDate, 'days'));
+  const dayWidth = 100 / (Math.abs(calendarStartDate.diff(calendarEndDate, 'days')) + 1);
   const result: Array<Array<{
     startDate: moment.Moment;
     endDate: moment.Moment;
@@ -145,7 +145,7 @@ export const fillDataWithFakeEvents = (
           result[i].push({
             startDate: event.startDate,
             endDate: event.endDate,
-            width: Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) * dayWidth,
+            width: (Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) + 1) * dayWidth,
             isFake: false,
             clipLeft: false,
             clipRight: event.endDate.diff(calendarEndDate, 'days') <= 0
@@ -154,7 +154,7 @@ export const fillDataWithFakeEvents = (
           result[i].push({
             startDate: event.startDate,
             endDate: event.endDate,
-            width: Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) * dayWidth,
+            width: (Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) + 1) * dayWidth,
             isFake: false,
             clipLeft: true,
             clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0
@@ -164,11 +164,11 @@ export const fillDataWithFakeEvents = (
         const previousEvent = row[j - 1];
         const diff = previousEvent.startDate.diff(event.startDate);
         const endDateForWidth = event.endDate.isBefore(calendarEndDate) ? event.endDate : calendarEndDate;
-        if (diff < 0) {
+        if (diff < 0 && (Math.abs(event.startDate.diff(previousEvent.endDate, 'days')) > 1)) {
           result[i].push({
             startDate: previousEvent.endDate,
             endDate: event.startDate,
-            width: Math.abs(event.startDate.diff(previousEvent.endDate, 'days')) * dayWidth,
+            width: (Math.abs(event.startDate.diff(previousEvent.endDate, 'days')) - 1) * dayWidth,
             isFake: true,
             clipLeft: false,
             clipRight: false
@@ -177,7 +177,7 @@ export const fillDataWithFakeEvents = (
         result[i].push({
           startDate: event.startDate,
           endDate: event.endDate,
-          width: Math.abs(event.startDate.diff(endDateForWidth, 'days')) * dayWidth,
+          width: (Math.abs(event.startDate.diff(endDateForWidth, 'days')) + 1) * dayWidth,
           isFake: false,
           clipLeft: false,
           clipRight: event.endDate.diff(calendarEndDate) >= 0
