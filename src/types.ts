@@ -16,6 +16,7 @@ export interface ICalendarProps {
   headerColumnWidth?: number;
   startMonth?: number;
   startYear?: number;
+  startDayOfMonth?: number;
   data: IData;
   headerColumnText?: string;
 }
@@ -34,7 +35,6 @@ export interface ICalendarState {
 }
 
 export interface IRowProps {
-  view: CalendarDefaultViewEnum;
   headerColumnWidth: number;
   bodyColumnWidth: number;
   startDate: string;
@@ -57,9 +57,4 @@ export interface IData {
 
 export interface IContext {
   view: CalendarDefaultViewEnum;
-  headerColumnWidth: number;
-  startMonth: number;
-  startYear: number;
-  data: IData;
-  headerColumnText: string;
 }

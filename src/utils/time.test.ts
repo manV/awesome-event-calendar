@@ -23,33 +23,70 @@ describe('utils::getNumberOfWeeksBetweenDates', () => {
 
 describe('utils::getStartAndEndDates', () => {
   test('should return valid start/end dates in case of month view 1', () => {
-    expect(getStartAndEndDates(0, 2018, CalendarDefaultViewEnum.month)).toEqual({
+    expect(getStartAndEndDates({
+      dayOfMonth: 1,
+      month: 0,
+      year: 2018,
+      view: CalendarDefaultViewEnum.month
+    })).toEqual({
       endDate: '2018-02-03',
       startDate: '2017-12-31'
     });
   });
   test('should return valid start/end dates in case of month view 2', () => {
-    expect(getStartAndEndDates(1, 2018, CalendarDefaultViewEnum.month)).toEqual({
+    expect(getStartAndEndDates({
+      dayOfMonth: 1,
+      month: 1,
+      year: 2018,
+      view: CalendarDefaultViewEnum.month
+    })).toEqual({
       startDate: '2018-01-28',
       endDate: '2018-03-03'
     });
   });
   test('should return valid start/end dates in case of quarter view 1', () => {
-    expect(getStartAndEndDates(0, 2018, CalendarDefaultViewEnum.quarter)).toEqual({
+    expect(getStartAndEndDates({
+      dayOfMonth: 1,
+      month: 0,
+      year: 2018,
+      view: CalendarDefaultViewEnum.quarter
+    })).toEqual({
       startDate: '2017-12-31',
       endDate: '2018-03-31'
     });
   });
   test('should return valid start/end dates in case of quarter view 2', () => {
-    expect(getStartAndEndDates(3, 2018, CalendarDefaultViewEnum.quarter)).toEqual({
+    expect(getStartAndEndDates({
+      dayOfMonth: 1,
+      month: 3,
+      year: 2018,
+      view: CalendarDefaultViewEnum.quarter
+    })).toEqual({
       startDate: '2018-04-01',
       endDate: '2018-06-30'
     });
   });
-  test('should throw if try to find values for day view', () => {
-    expect(() => {
-      getStartAndEndDates(3, 2018, CalendarDefaultViewEnum.day);
-    }).toThrow();
+  test('should return valid start/end dates in case of day view 1', () => {
+    expect(getStartAndEndDates({
+      dayOfMonth: 1,
+      month: 0,
+      year: 2018,
+      view: CalendarDefaultViewEnum.day
+    })).toEqual({
+      startDate: '2017-12-31',
+      endDate: '2018-01-06'
+    });
+  });
+  test('should return valid start/end dates in case of day view 2', () => {
+    expect(getStartAndEndDates({
+      dayOfMonth: 30,
+      month: 0,
+      year: 2018,
+      view: CalendarDefaultViewEnum.day
+    })).toEqual({
+      startDate: '2018-01-28',
+      endDate: '2018-02-03'
+    });
   });
 });
 

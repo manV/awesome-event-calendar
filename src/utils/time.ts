@@ -8,23 +8,33 @@ export const getNumberOfWeeksBetweenDates = (startDate: string, endDate: string)
   return Math.ceil(diffInDays / 7);
 };
 
-export const getStartAndEndDates = (month: number, year: number, view: CalendarDefaultViewEnum): {
+export const getStartAndEndDates = ({
+  view, dayOfMonth, month, year
+}: {
+  view: CalendarDefaultViewEnum
+  dayOfMonth: number
+  month: number,
+  year: number,
+}): {
   startDate: string,
   endDate: string
 } => {
-  const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+  let startDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayOfMonth).padStart(2, '0')}`;
+  if (view === CalendarDefaultViewEnum.day) {
+    startDate = moment.utc(startDate, dateFormatter).startOf('week').format(dateFormatter);
+  }
   const startDateMoment = moment.utc(startDate, dateFormatter);
   let endDate = '';
   if (view === CalendarDefaultViewEnum.month) {
     endDate = startDateMoment.endOf('month').endOf('week').format(dateFormatter);
   } else if (view === CalendarDefaultViewEnum.quarter) {
     endDate = startDateMoment
-      .add(2, 'month')
-      .endOf('month')
-      .endOf('week')
-      .format(dateFormatter);
+    .add(2, 'month')
+    .endOf('month')
+    .endOf('week')
+    .format(dateFormatter);
   } else {
-    throw new Error('This should never have happened.');
+    endDate = moment.utc(startDate, dateFormatter).add(6, 'days').format(dateFormatter);
   }
   return {
     startDate: moment.utc(startDate, dateFormatter).startOf('week').format(dateFormatter),
@@ -74,7 +84,7 @@ export const groupNonConflictingEvents = (data: Array<{
     // find first not conflicting line
     for (const line of result) {
       const hasConflict = line
-        .find((re) => eventStartDate.isSameOrBefore(re.endDate) && eventEndDate.isSameOrAfter(re.startDate));
+      .find((re) => eventStartDate.isSameOrBefore(re.endDate) && eventEndDate.isSameOrAfter(re.startDate));
       if (hasConflict) {
         conflictingCount++;
       } else {
