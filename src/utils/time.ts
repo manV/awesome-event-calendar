@@ -42,21 +42,35 @@ export const getStartAndEndDates = ({
   };
 };
 
-export const getColumnWeekStartAndEndDates = (startDate: string, numberOfWeeks: number) => {
+export const getColumnWeekStartAndEndDates = ({
+  startDate, numberOfWeeks
+}: {startDate: string, numberOfWeeks: number}) => {
   const result: Array<{
     startDate: moment.Moment;
     endDate: moment.Moment;
   }> = [];
   let currDate = moment.utc(startDate, dateFormatter).startOf('week');
-  for (let i = 0; i < numberOfWeeks; i++) {
-    const weekStartDate = currDate.clone();
-    currDate = currDate.add(6, 'days');
-    const weekEndDate = currDate.clone();
-    currDate = currDate.add(1, 'day');
-    result.push({
-      startDate: weekStartDate,
-      endDate: weekEndDate
-    });
+  if (numberOfWeeks === 1) {
+    for (let i = 0; i < 7; i++) {
+      const columnStartDate = currDate.clone();
+      const columnEndDate = currDate.clone();
+      currDate = currDate.add(1, 'day');
+      result.push({
+        startDate: columnStartDate,
+        endDate: columnEndDate
+      });
+    }
+  } else {
+    for (let i = 0; i < numberOfWeeks; i++) {
+      const weekStartDate = currDate.clone();
+      currDate = currDate.add(6, 'days');
+      const weekEndDate = currDate.clone();
+      currDate = currDate.add(1, 'day');
+      result.push({
+        startDate: weekStartDate,
+        endDate: weekEndDate
+      });
+    }
   }
   return result;
 };

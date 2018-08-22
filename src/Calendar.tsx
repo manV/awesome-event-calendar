@@ -45,7 +45,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
       year: startYear
     });
     const numberOfWeeks = getNumberOfWeeksBetweenDates(startDate, endDate);
-    const weekStartAndEndDates = getColumnWeekStartAndEndDates(startDate, numberOfWeeks);
+    const weekStartAndEndDates = getColumnWeekStartAndEndDates({startDate, numberOfWeeks});
     this.state = {
       headerColumnWidth: this.props.headerColumnWidth || 20,
       bodyColumnWidth: 100 - (this.props.headerColumnWidth || 20),

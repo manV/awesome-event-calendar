@@ -91,8 +91,11 @@ describe('utils::getStartAndEndDates', () => {
 });
 
 describe('utils::getColumnWeekStartAndEndDates', () => {
-  test('should return correct value', () => {
-    expect(getColumnWeekStartAndEndDates('2018-01-01', 5).map((r) => ({
+  test('should return correct value in case of multiple weeks', () => {
+    expect(getColumnWeekStartAndEndDates({
+      numberOfWeeks: 5,
+      startDate: '2018-01-01'
+    }).map((r) => ({
       startDate: r.startDate.toISOString(),
       endDate: r.endDate.toISOString()
     }))).toEqual([
@@ -111,6 +114,38 @@ describe('utils::getColumnWeekStartAndEndDates', () => {
       }, {
         endDate: '2018-02-03T00:00:00.000Z',
         startDate: '2018-01-28T00:00:00.000Z'
+      }]
+    );
+  });
+  test('should return correct value in case of single week', () => {
+    expect(getColumnWeekStartAndEndDates({
+      numberOfWeeks: 1,
+      startDate: '2018-01-01'
+    }).map((r) => ({
+      startDate: r.startDate.toISOString(),
+      endDate: r.endDate.toISOString()
+    }))).toEqual([
+      {
+        endDate: '2017-12-31T00:00:00.000Z',
+        startDate: '2017-12-31T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-01T00:00:00.000Z',
+        startDate: '2018-01-01T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-02T00:00:00.000Z',
+        startDate: '2018-01-02T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-03T00:00:00.000Z',
+        startDate: '2018-01-03T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-04T00:00:00.000Z',
+        startDate: '2018-01-04T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-05T00:00:00.000Z',
+        startDate: '2018-01-05T00:00:00.000Z'
+      }, {
+        endDate: '2018-01-06T00:00:00.000Z',
+        startDate: '2018-01-06T00:00:00.000Z'
       }]
     );
   });
