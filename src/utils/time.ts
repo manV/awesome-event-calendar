@@ -8,16 +8,16 @@ export const getNumberOfWeeksBetweenDates = (startDate: string, endDate: string)
   return Math.ceil(diffInDays / 7);
 };
 
-export const getStartAndEndDates = (month: number, year: number, defaultView: CalendarDefaultViewEnum): {
+export const getStartAndEndDates = (month: number, year: number, view: CalendarDefaultViewEnum): {
   startDate: string,
   endDate: string
 } => {
   const startDate = `${year}-${String(month + 1).padStart(2, '0')}-01`;
   const startDateMoment = moment.utc(startDate, dateFormatter);
   let endDate = '';
-  if (defaultView === CalendarDefaultViewEnum.month) {
+  if (view === CalendarDefaultViewEnum.month) {
     endDate = startDateMoment.endOf('month').endOf('week').format(dateFormatter);
-  } else if (defaultView === CalendarDefaultViewEnum.quarter) {
+  } else if (view === CalendarDefaultViewEnum.quarter) {
     endDate = startDateMoment
       .add(2, 'month')
       .endOf('month')

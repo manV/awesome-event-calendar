@@ -34,17 +34,17 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
     super(props);
     const startMonth = this.props.startMonth || (new Date()).getMonth();
     const startYear = this.props.startYear || (new Date()).getFullYear();
-    const defaultView = this.props.defaultView || CalendarDefaultViewEnum.month;
+    const view = this.props.view || CalendarDefaultViewEnum.month;
     const {
       startDate,
       endDate
-    } = getStartAndEndDates(startMonth, startYear, defaultView);
+    } = getStartAndEndDates(startMonth, startYear, view);
     const numberOfWeeks = getNumberOfWeeksBetweenDates(startDate, endDate);
     const weekStartAndEndDates = getColumnWeekStartAndEndDates(startDate, numberOfWeeks);
     this.state = {
       headerColumnWidth: this.props.headerColumnWidth || 20,
       bodyColumnWidth: 100 - (this.props.headerColumnWidth || 20),
-      defaultView,
+      view,
       startMonth,
       startYear,
       startDate,
@@ -65,7 +65,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
             bodyColumnWidth={this.state.bodyColumnWidth}
             startDate={this.state.startDate}
             endDate={this.state.endDate}
-            defaultView={this.state.defaultView}
+            view={this.state.view}
             weekStartAndEndDates={this.state.weekStartAndEndDates}
             isHeader={true}
           />
@@ -79,7 +79,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
                 bodyColumnWidth={this.state.bodyColumnWidth}
                 startDate={this.state.startDate}
                 endDate={this.state.endDate}
-                defaultView={this.state.defaultView}
+                view={this.state.view}
                 weekStartAndEndDates={this.state.weekStartAndEndDates}
                 data={this.props.data[key]}
                 key={key}

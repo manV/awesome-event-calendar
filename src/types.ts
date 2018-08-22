@@ -12,7 +12,7 @@ interface ITimeInterval {
 }
 
 export interface ICalendarProps {
-  defaultView?: CalendarDefaultViewEnum;
+  view?: CalendarDefaultViewEnum;
   headerColumnWidth?: number;
   startMonth?: number;
   startYear?: number;
@@ -23,7 +23,7 @@ export interface ICalendarProps {
 export interface ICalendarState {
   headerColumnWidth: number;
   bodyColumnWidth: number;
-  defaultView: CalendarDefaultViewEnum;
+  view: CalendarDefaultViewEnum;
   startMonth: number;
   startYear: number;
   startDate: string;
@@ -34,7 +34,7 @@ export interface ICalendarState {
 }
 
 export interface IRowProps {
-  defaultView: CalendarDefaultViewEnum;
+  view: CalendarDefaultViewEnum;
   headerColumnWidth: number;
   bodyColumnWidth: number;
   startDate: string;
@@ -53,4 +53,13 @@ export interface IData {
     startDate: string;
     endDate: string;
   }>;
+}
+
+export interface IContext {
+  view: CalendarDefaultViewEnum;
+  headerColumnWidth: number;
+  startMonth: number;
+  startYear: number;
+  data: IData;
+  headerColumnText: string;
 }
