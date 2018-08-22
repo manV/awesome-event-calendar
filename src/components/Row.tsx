@@ -42,6 +42,7 @@ const Row = styled.div`
 const RowSegment = styled.div`
   background-color: red;
   padding: 8px 0;
+  word-wrap: break-word;
 `;
 
 export default class Header extends React.Component<IRowProps, {
