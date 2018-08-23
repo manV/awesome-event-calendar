@@ -32,7 +32,10 @@ import {
 export default class Calendar extends React.Component<ICalendarProps, ICalendarState> {
   constructor(props: ICalendarProps) {
     super(props);
-    const startMonth = this.props.startMonth || (new Date()).getMonth();
+    const startMonth = (
+      this.props.startMonth !== undefined
+      && Number.isInteger(this.props.startMonth)
+    ) ? this.props.startMonth : (new Date()).getMonth();
     const startYear = this.props.startYear || (new Date()).getFullYear();
     const view = this.props.view || defaultContextValues.view;
     const {
