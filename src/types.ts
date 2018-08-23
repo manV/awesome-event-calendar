@@ -19,6 +19,7 @@ export interface ICalendarProps {
   startDayOfMonth?: number;
   data: IData;
   headerColumnText?: string;
+  renderSegment?(segmentData: ISegmentData): JSX.Element;
 }
 
 export interface ICalendarState {
@@ -32,6 +33,7 @@ export interface ICalendarState {
   numberOfWeeks: number;
   numberOfDays: number;
   weekStartAndEndDates: ITimeInterval[];
+  renderSegment(segmentData: ISegmentData): JSX.Element;
 }
 
 export interface IRowProps {
@@ -47,6 +49,7 @@ export interface IRowProps {
   }>;
   headerColumnText?: string;
   isHeader: boolean;
+  renderSegment?(segmentData: ISegmentData): JSX.Element;
 }
 
 export interface IData {
@@ -59,4 +62,14 @@ export interface IData {
 
 export interface IContext {
   view: CalendarDefaultViewEnum;
+}
+
+export interface ISegmentData {
+  startDate: Moment;
+  endDate: Moment;
+  width: number;
+  metadata: any;
+  isFake: boolean;
+  clipRight: boolean;
+  clipLeft: boolean;
 }

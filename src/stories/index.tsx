@@ -50,32 +50,55 @@ storiesOf('Calendar', module)
     }} />
   ))
   .add('day view', () => (
-    <Calendar view={CalendarDefaultViewEnum.day} startMonth={0} startDayOfMonth={1} startYear={2018} data={{
-      'test': [{
-        startDate: '2017-12-25',
-        endDate: '2018-01-01',
-        metadata: {}
-      }, {
-        startDate: '2018-01-01',
-        endDate: '2018-01-05',
-        metadata: {}
-      }, {
-        startDate: '2018-01-03',
-        endDate: '2018-01-07',
-        metadata: {}
-      }],
-      'test 1': [{
-        startDate: '2017-12-25',
-        endDate: '2018-01-01',
-        metadata: {}
-      }, {
-        startDate: '2018-01-01',
-        endDate: '2018-01-05',
-        metadata: {}
-      }, {
-        startDate: '2018-01-03',
-        endDate: '2018-01-07',
-        metadata: {}
-      }]
-    }} />
+    <Calendar
+      view={CalendarDefaultViewEnum.day}
+      startMonth={0}
+      startDayOfMonth={1}
+      startYear={2018}
+      renderSegment={(segmentData) => (
+        <span style={{
+          flex: 1,
+          textAlign: 'center'
+        }} >{segmentData.metadata.name}</span>
+      )}
+      data={{
+        'test': [{
+          startDate: '2017-12-25',
+          endDate: '2018-01-01',
+          metadata: {
+            name: 'blah blah blah lorem ipsum'
+          }
+        }, {
+          startDate: '2018-01-01',
+          endDate: '2018-01-05',
+          metadata: {
+            name: 'blah blah blah lorem ipsum'
+          }
+        }, {
+          startDate: '2018-01-03',
+          endDate: '2018-01-07',
+          metadata: {
+            name: 'blah blah blah lorem ipsum'
+          }
+        }],
+        'test 1': [{
+          startDate: '2017-12-25',
+          endDate: '2018-01-01',
+          metadata: {
+            name: 'blah blah blah lorem ipsum'
+          }
+        }, {
+          startDate: '2018-01-01',
+          endDate: '2018-01-05',
+          metadata: {
+            name: 'blah blah blah lorem ipsum'
+          }
+        }, {
+          startDate: '2018-01-03',
+          endDate: '2018-01-07',
+          metadata: {
+            name: 'blah blah blah lorem ipsum'
+          }
+        }]
+      }} />
   ));

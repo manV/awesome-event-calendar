@@ -26,7 +26,8 @@ import {
 
 import {
   ICalendarProps,
-  ICalendarState
+  ICalendarState,
+  ISegmentData
 } from './types';
 
 export default class Calendar extends React.Component<ICalendarProps, ICalendarState> {
@@ -49,6 +50,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
     });
     const numberOfWeeks = getNumberOfWeeksBetweenDates(startDate, endDate);
     const weekStartAndEndDates = getColumnWeekStartAndEndDates({startDate, numberOfWeeks});
+    const renderSegment = this.props.renderSegment || ((segmentData: ISegmentData) => (<span>&nbsp;</span>));
     this.state = {
       headerColumnWidth: this.props.headerColumnWidth || 20,
       bodyColumnWidth: 100 - (this.props.headerColumnWidth || 20),
@@ -59,7 +61,8 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
       endDate,
       numberOfWeeks,
       numberOfDays: numberOfWeeks * 7,
-      weekStartAndEndDates
+      weekStartAndEndDates,
+      renderSegment
     };
   }
   render() {
@@ -92,6 +95,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
                   weekStartAndEndDates={this.state.weekStartAndEndDates}
                   data={this.props.data[key]}
                   key={key}
+                  renderSegment={this.state.renderSegment}
                 />;
               })
             }

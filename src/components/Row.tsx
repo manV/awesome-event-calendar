@@ -43,6 +43,7 @@ const RowSegment = styled.div`
   background-color: red;
   padding: 8px 0;
   word-wrap: break-word;
+  display: flex;
 `;
 
 export default class Header extends React.Component<IRowProps, {
@@ -102,14 +103,13 @@ export default class Header extends React.Component<IRowProps, {
                             borderBottomLeftRadius: `${segmentData.clipLeft ? '0' : '10px'}`,
                             borderTopRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
                             borderBottomRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
-                          }}>{
-                            segmentData.isFake ?
-                              ' ' :
-                              `${
-                                segmentData.startDate.format('DD')
-                              }<>${
-                                segmentData.endDate.format('DD')
-                              }`}
+                          }}>
+                            {
+                              segmentData.isFake ?
+                                ' ' : (
+                                  this.props.renderSegment ? this.props.renderSegment(segmentData) : ' '
+                                )
+                            }
                           </RowSegment>
                         );
                       })
