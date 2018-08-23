@@ -1,7 +1,12 @@
 {
   "name": "@mananv/arc",
   "version": "0.0.1",
-  "description": "",
+  "description": "A react calendar component with quarter/month/day view.",
+  "homepage": "https://github.com/manV/awesome-event-calendar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manV/awesome-event-calendar.git"
+  },
   "main": "lib/index.js",
   "scripts": {
     "test": "jest",
@@ -9,9 +14,9 @@
     "prepare": "npm run build",
     "storybook": "start-storybook -p 9001"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["react", "calendar"],
+  "author": "Manan Vaghasiya",
+  "license": "MIT",
   "devDependencies": {
     "@storybook/cli": "^3.4.10",
     "@storybook/react": "^4.0.0-alpha.16",
