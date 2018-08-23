@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import styled from './../styled';
 import * as React from 'react';
+import { ITimeInterval } from '../types';
 
 const CellWrapper = styled.div`
   height: auto;
@@ -20,17 +21,6 @@ const CellWrapper = styled.div`
   border-bottom: 1px solid #ddd;
 `;
 
-const defaultHeaderFormatter = (
-  startDate: moment.Moment,
-  endDate: moment.Moment,
-  index: number
-) => {
-  if (startDate.isSame(endDate)) {
-    return `${startDate.format('MM/DD')}`;
-  }
-  return `${startDate.format('MM/DD')}-${endDate.format('MM/DD')}`;
-};
-
 const defaultOnCellClick = (
   startDate: moment.Moment,
   endDate: moment.Moment,
@@ -47,12 +37,12 @@ export default (props: {
   index: number;
   isHeader: boolean;
   headerColumnText?: string;
-  headerFormatter?: (startDate: moment.Moment, endDate: moment.Moment, index: number) => string;
+  renderRowHeaderCell?: (text: string) => JSX.Element
+  renderTableHeaderCell?: (index: number, cellInterval: ITimeInterval) => JSX.Element
   onCellClick?: (startDate: moment.Moment, endDate: moment.Moment, index: number, isHeader: boolean) => never;
 }) => {
   const onCellClick = props.onCellClick || defaultOnCellClick;
   if (props.isHeader) {
-    const headerFormatter = props.headerFormatter || defaultHeaderFormatter;
     return (
       <CellWrapper
         style={{
@@ -66,7 +56,13 @@ export default (props: {
           props.index === -1
             ? (
               props.headerColumnText || 'DEFAULT TITLE'
-            ) : headerFormatter(props.startDate || moment(), props.endDate || moment(), props.index)
+            ) : (
+              props.renderTableHeaderCell
+              ? props.renderTableHeaderCell(props.index, {
+                startDate: props.startDate || moment(),
+                endDate: props.endDate || moment()
+              }) : ' '
+            )
         }
       </CellWrapper>
     );
@@ -76,7 +72,10 @@ export default (props: {
       width: `${props.width}%`
     }}>
       {
-        props.index === -1 ? `${props.headerColumnText || ''}` : ''
+        props.index === -1 ? (
+          props.renderRowHeaderCell
+          ? props.renderRowHeaderCell(props.headerColumnText || ' ') : ' '
+        ) : ''
       }
     </CellWrapper>
   );

@@ -61,12 +61,13 @@ export default class Header extends React.Component<IRowProps, {
   }
   render() {
     return (
-      <RowWrapper>
+      <RowWrapper className="row-wrapper">
         <Cell
           width={this.state.headerCellWidth}
           index={-1}
           headerColumnText={this.props.headerColumnText}
           isHeader={this.props.isHeader}
+          renderRowHeaderCell={this.props.renderRowHeaderCell}
         />
         <RowBodyWrapper style={{width: `${100 - this.state.headerCellWidth}%`}}>
           <BgWrapper>
@@ -79,6 +80,7 @@ export default class Header extends React.Component<IRowProps, {
                   startDate={startDate}
                   endDate={endDate}
                   key={index}
+                  renderTableHeaderCell={this.props.renderTableHeaderCell}
                 />;
               })
             }
@@ -107,7 +109,10 @@ export default class Header extends React.Component<IRowProps, {
                             {
                               segmentData.isFake ?
                                 ' ' : (
-                                  this.props.renderSegment ? this.props.renderSegment(segmentData) : ' '
+                                  this.props.renderSegment ? this.props.renderSegment(segmentData, {
+                                    startDate: segmentData.startDate,
+                                    endDate: segmentData.endDate
+                                  }) : ' '
                                 )
                             }
                           </RowSegment>

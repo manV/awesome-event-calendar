@@ -6,7 +6,7 @@ export enum CalendarDefaultViewEnum {
   day= 'day'
 }
 
-interface ITimeInterval {
+export interface ITimeInterval {
   startDate: Moment;
   endDate: Moment;
 }
@@ -19,7 +19,9 @@ export interface ICalendarProps {
   startDayOfMonth?: number;
   data: IData;
   headerColumnText?: string;
-  renderSegment?(segmentData: ISegmentData): JSX.Element;
+  renderSegment?(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
+  renderRowHeaderCell?(text: string): JSX.Element;
+  renderTableHeaderCell?(index: number, cellInterval: ITimeInterval): JSX.Element;
 }
 
 export interface ICalendarState {
@@ -33,7 +35,9 @@ export interface ICalendarState {
   numberOfWeeks: number;
   numberOfDays: number;
   weekStartAndEndDates: ITimeInterval[];
-  renderSegment(segmentData: ISegmentData): JSX.Element;
+  renderSegment(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
+  renderRowHeaderCell(text: string): JSX.Element;
+  renderTableHeaderCell(index: number, cellInterval: ITimeInterval): JSX.Element;
 }
 
 export interface IRowProps {
@@ -49,7 +53,9 @@ export interface IRowProps {
   }>;
   headerColumnText?: string;
   isHeader: boolean;
-  renderSegment?(segmentData: ISegmentData): JSX.Element;
+  renderSegment?(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
+  renderRowHeaderCell?(text: string): JSX.Element;
+  renderTableHeaderCell?(index: number, cellInterval: ITimeInterval): JSX.Element;
 }
 
 export interface IData {
