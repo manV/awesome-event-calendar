@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import Calendar from '..';
+import { CalendarDefaultViewEnum } from '../types';
 
 storiesOf('Calendar', module)
   .add('default', () => (
@@ -36,6 +37,30 @@ storiesOf('Calendar', module)
       }, {
         startDate: '2017-12-21',
         endDate: '2017-12-23'
+      }]
+    }} />
+  ))
+  .add('day view', () => (
+    <Calendar view={CalendarDefaultViewEnum.day} startMonth={0} startDayOfMonth={1} startYear={2018} data={{
+      'test': [{
+        startDate: '2017-12-25',
+        endDate: '2018-01-01'
+      }, {
+        startDate: '2018-01-01',
+        endDate: '2018-01-05'
+      }, {
+        startDate: '2018-01-03',
+        endDate: '2018-01-07'
+      }],
+    'test 1': [{
+        startDate: '2017-12-25',
+        endDate: '2018-01-01'
+      }, {
+        startDate: '2018-01-01',
+        endDate: '2018-01-05'
+      }, {
+        startDate: '2018-01-03',
+        endDate: '2018-01-07'
       }]
     }} />
   ));
