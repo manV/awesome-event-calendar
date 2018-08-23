@@ -78,16 +78,19 @@ export const getColumnWeekStartAndEndDates = ({
 export const groupNonConflictingEvents = (data: Array<{
   startDate: string;
   endDate: string;
+  metadata: any;
 }>): Array<Array<{
-  startDate: moment.Moment
-  endDate: moment.Moment
+  startDate: moment.Moment;
+  endDate: moment.Moment;
+  metadata: any;
 }>> => {
   const sortedData = data.sort((left, right) => {
     return moment.utc(left.startDate, dateFormatter).diff(moment.utc(right.startDate, dateFormatter));
   });
   const result: Array<Array<{
-    startDate: moment.Moment
-    endDate: moment.Moment
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    metadata: any;
   }>> = [[]];
   sortedData.forEach((event) => {
     const eventStartDate = moment.utc(event.startDate, dateFormatter);
@@ -104,7 +107,8 @@ export const groupNonConflictingEvents = (data: Array<{
       } else {
         line.push({
           startDate: eventStartDate,
-          endDate: eventEndDate
+          endDate: eventEndDate,
+          metadata: event.metadata
         });
         break;
       }
@@ -113,7 +117,8 @@ export const groupNonConflictingEvents = (data: Array<{
     if (conflictingCount === result.length) {
       result.push([{
         startDate: eventStartDate,
-        endDate: eventEndDate
+        endDate: eventEndDate,
+        metadata: event.metadata
       }]);
     }
   });
@@ -124,13 +129,15 @@ export const fillDataWithFakeEvents = (
   calendarStartDateStr: string,
   calendarEndDateStr: string,
   data: Array<Array<{
-    startDate: moment.Moment
-    endDate: moment.Moment
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    metadata: any;
   }>>
 ): Array<Array<{
   startDate: moment.Moment;
   endDate: moment.Moment;
   width: number;
+  metadata: any;
   isFake: boolean;
   clipRight: boolean;
   clipLeft: boolean;
@@ -145,6 +152,7 @@ export const fillDataWithFakeEvents = (
     isFake: boolean;
     clipRight: boolean;
     clipLeft: boolean;
+    metadata: any;
   }>> = [];
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
@@ -164,7 +172,8 @@ export const fillDataWithFakeEvents = (
             width: Math.abs(event.startDate.diff(calendarStartDate, 'days')) * dayWidth,
             isFake: true,
             clipLeft: false,
-            clipRight: false
+            clipRight: false,
+            metadata: event.metadata
           });
           result[i].push({
             startDate: event.startDate,
@@ -172,7 +181,8 @@ export const fillDataWithFakeEvents = (
             width: (Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) + 1) * dayWidth,
             isFake: false,
             clipLeft: false,
-            clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0
+            clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0,
+            metadata: event.metadata
           });
         } else {
           result[i].push({
@@ -181,7 +191,8 @@ export const fillDataWithFakeEvents = (
             width: (Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) + 1) * dayWidth,
             isFake: false,
             clipLeft: true,
-            clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0
+            clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0,
+            metadata: event.metadata
           });
         }
       } else {
@@ -195,7 +206,8 @@ export const fillDataWithFakeEvents = (
             width: (Math.abs(event.startDate.diff(previousEvent.endDate, 'days')) - 1) * dayWidth,
             isFake: true,
             clipLeft: false,
-            clipRight: false
+            clipRight: false,
+            metadata: event.metadata
           });
         }
         result[i].push({
@@ -204,7 +216,8 @@ export const fillDataWithFakeEvents = (
           width: (Math.abs(event.startDate.diff(endDateForWidth, 'days')) + 1) * dayWidth,
           isFake: false,
           clipLeft: false,
-          clipRight: event.endDate.diff(calendarEndDate) >= 0
+          clipRight: event.endDate.diff(calendarEndDate) >= 0,
+          metadata: event.metadata
         });
       }
     }

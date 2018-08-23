@@ -43,6 +43,7 @@ export interface IRowProps {
   data?: Array<{
     startDate: string;
     endDate: string;
+    metadata: any;
   }>;
   headerColumnText?: string;
   isHeader: boolean;
@@ -52,6 +53,7 @@ export interface IData {
   [key: string]: Array<{
     startDate: string;
     endDate: string;
+    metadata: any;
   }>;
 }
 

@@ -158,7 +158,8 @@ describe('utils::groupNonConflictingEvents', () => {
       return lineArray.map((event: any) => {
         return {
           startDate: event.startDate.toISOString(),
-          endDate: event.endDate.toISOString()
+          endDate: event.endDate.toISOString(),
+          metadata: event.metadata
         };
       });
     });
@@ -166,29 +167,33 @@ describe('utils::groupNonConflictingEvents', () => {
   test('should return correct value in case of just one line', () => {
     expect(convertResultToString(groupNonConflictingEvents([{
       startDate: '2018-01-08',
-      endDate: '2018-01-12'
+      endDate: '2018-01-12',
+      metadata: {}
     }, {
       startDate: '2018-01-01',
-      endDate: '2018-01-07'
+      endDate: '2018-01-07',
+      metadata: {}
     }]))).toEqual([
       [
-        {endDate: '2018-01-07T00:00:00.000Z', startDate: '2018-01-01T00:00:00.000Z'},
-        {endDate: '2018-01-12T00:00:00.000Z', startDate: '2018-01-08T00:00:00.000Z'}
+        {endDate: '2018-01-07T00:00:00.000Z', startDate: '2018-01-01T00:00:00.000Z', metadata: {}},
+        {endDate: '2018-01-12T00:00:00.000Z', startDate: '2018-01-08T00:00:00.000Z', metadata: {}}
       ]
     ]);
   });
   test('should return correct value in case of just two line', () => {
     expect(convertResultToString(groupNonConflictingEvents([{
       startDate: '2018-01-01',
-      endDate: '2018-01-07'
+      endDate: '2018-01-07',
+      metadata: {}
     }, {
       startDate: '2018-01-07',
-      endDate: '2018-01-12'
+      endDate: '2018-01-12',
+      metadata: {}
     }]))).toEqual([
       [
-        {endDate: '2018-01-07T00:00:00.000Z', startDate: '2018-01-01T00:00:00.000Z'}
+        {endDate: '2018-01-07T00:00:00.000Z', startDate: '2018-01-01T00:00:00.000Z', metadata: {}}
       ], [
-        {endDate: '2018-01-12T00:00:00.000Z', startDate: '2018-01-07T00:00:00.000Z'}
+        {endDate: '2018-01-12T00:00:00.000Z', startDate: '2018-01-07T00:00:00.000Z', metadata: {}}
       ]
     ]);
   });
@@ -202,7 +207,8 @@ describe('utils::fillDataWithFakeEvents', () => {
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-07-07', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
+          metadata: {}
         }]
       ]
     )).toEqual([
@@ -211,7 +217,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           clipLeft: true, clipRight: false,
           endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 10.294117647058824
+          width: 10.294117647058824,
+          metadata: {}
         }
       ]
     ]);
@@ -224,7 +231,8 @@ describe('utils::fillDataWithFakeEvents', () => {
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
+          metadata: {}
         }]
       ]
     )).toEqual([
@@ -233,7 +241,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           clipLeft: true, clipRight: true,
           endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 100
+          width: 100,
+          metadata: {}
         }
       ]
     ]);
@@ -246,7 +255,8 @@ describe('utils::fillDataWithFakeEvents', () => {
       [
         [{
           startDate: moment.utc('2018-06-25', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
+          metadata: {}
         }]
       ]
     )).toEqual([
@@ -255,7 +265,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           clipLeft: true, clipRight: true,
           endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-06-25', 'YYYY-MM-DD'),
-          width: 100
+          width: 100,
+          metadata: {}
         }
       ]
     ]);
@@ -268,7 +279,8 @@ describe('utils::fillDataWithFakeEvents', () => {
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-09-16', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-09-16', 'YYYY-MM-DD'),
+          metadata: {}
         }]
       ]
     )).toEqual([
@@ -277,7 +289,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           clipLeft: true, clipRight: true,
           endDate: moment.utc('2018-09-16', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 100
+          width: 100,
+          metadata: {}
         }
       ]
     ]);
@@ -289,20 +302,25 @@ describe('utils::fillDataWithFakeEvents', () => {
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-07-16', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
+          metadata: {}
         }, {
           startDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-08-16', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-08-16', 'YYYY-MM-DD'),
+          metadata: {}
         }, {
           startDate: moment.utc('2018-08-17', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
+          metadata: {}
         }],
         [{
           startDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-07-20', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
+          metadata: {}
         }, {
           startDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
-          endDate: moment.utc('2018-08-20', 'YYYY-MM-DD')
+          endDate: moment.utc('2018-08-20', 'YYYY-MM-DD'),
+          metadata: {}
         }]
       ]
     )).toEqual([
@@ -313,7 +331,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 23.529411764705884
+          width: 23.529411764705884,
+          metadata: {}
         },
         {
           clipLeft: false,
@@ -321,7 +340,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
           isFake: true,
           startDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
-          width: 11.764705882352942
+          width: 11.764705882352942,
+          metadata: {}
         },
         {
           clipLeft: false,
@@ -329,7 +349,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-08-16', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-25', 'YYYY-MM-DD'),
-          width: 33.82352941176471
+          width: 33.82352941176471,
+          metadata: {}
         },
         {
           clipLeft: false,
@@ -337,7 +358,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-08-17', 'YYYY-MM-DD'),
-          width: 30.88235294117647
+          width: 30.88235294117647,
+          metadata: {}
         }
       ],
       [
@@ -347,7 +369,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
           isFake: true,
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
-          width: 1.4705882352941178
+          width: 1.4705882352941178,
+          metadata: {}
         },
         {
           clipLeft: false,
@@ -355,7 +378,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-02', 'YYYY-MM-DD'),
-          width: 27.94117647058824
+          width: 27.94117647058824,
+          metadata: {}
         },
         {
           clipLeft: false,
@@ -363,7 +387,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
           isFake: true,
           startDate: moment.utc('2018-07-20', 'YYYY-MM-DD'),
-          width: 2.9411764705882355
+          width: 2.9411764705882355,
+          metadata: {}
         },
         {
           clipLeft: false,
@@ -371,7 +396,8 @@ describe('utils::fillDataWithFakeEvents', () => {
           endDate: moment.utc('2018-08-20', 'YYYY-MM-DD'),
           isFake: false,
           startDate: moment.utc('2018-07-23', 'YYYY-MM-DD'),
-          width: 42.64705882352941
+          width: 42.64705882352941,
+          metadata: {}
         }
       ]
     ]);
