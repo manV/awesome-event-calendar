@@ -12,29 +12,13 @@ export interface ITimeInterval {
 }
 
 export interface ICalendarProps {
-  view?: CalendarDefaultViewEnum;
-  headerColumnWidth?: number;
-  startMonth?: number;
-  startYear?: number;
-  startDayOfMonth?: number;
-  data: IData;
-  headerColumnText?: string;
-  renderSegment?(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
-  renderRowHeaderCell?(text: string): JSX.Element;
-  renderTableHeaderCell?(index: number, cellInterval: ITimeInterval): JSX.Element;
-}
-
-export interface ICalendarState {
-  headerColumnWidth: number;
-  bodyColumnWidth: number;
   view: CalendarDefaultViewEnum;
+  headerColumnWidth: number;
   startMonth: number;
   startYear: number;
-  startDate: string;
-  endDate: string;
-  numberOfWeeks: number;
-  numberOfDays: number;
-  weekStartAndEndDates: ITimeInterval[];
+  startDayOfMonth: number;
+  data: IData;
+  headerColumnText: string;
   renderSegment(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
   renderRowHeaderCell(text: string): JSX.Element;
   renderTableHeaderCell(index: number, cellInterval: ITimeInterval): JSX.Element;

@@ -26,7 +26,6 @@ import {
 
 import {
   ICalendarProps,
-  ICalendarState,
   ISegmentData,
   ITimeInterval
 } from './types';
@@ -42,59 +41,37 @@ const defaultRenderRowHeaderCell = (text: string) => {
   return <span>{text}</span>;
 };
 
-export default class Calendar extends React.Component<ICalendarProps, ICalendarState> {
-  constructor(props: ICalendarProps) {
-    super(props);
-    const startMonth = (
-      this.props.startMonth !== undefined
-      && Number.isInteger(this.props.startMonth)
-    ) ? this.props.startMonth : (new Date()).getMonth();
-    const startYear = this.props.startYear || (new Date()).getFullYear();
-    const view = this.props.view || defaultContextValues.view;
+export default class Calendar extends React.Component<ICalendarProps> {
+  render() {
     const {
       startDate,
       endDate
     } = getStartAndEndDates({
-      view,
-      dayOfMonth: this.props.startDayOfMonth || 1,
-      month: startMonth,
-      year: startYear
+      view: this.props.view,
+      dayOfMonth: this.props.startDayOfMonth,
+      month: this.props.startMonth,
+      year: this.props.startYear
     });
     const numberOfWeeks = getNumberOfWeeksBetweenDates(startDate, endDate);
     const weekStartAndEndDates = getColumnWeekStartAndEndDates({startDate, numberOfWeeks});
-    this.state = {
-      headerColumnWidth: this.props.headerColumnWidth || 20,
-      bodyColumnWidth: 100 - (this.props.headerColumnWidth || 20),
-      view,
-      startMonth,
-      startYear,
-      startDate,
-      endDate,
-      numberOfWeeks,
-      numberOfDays: numberOfWeeks * 7,
-      weekStartAndEndDates,
-      renderSegment: this.props.renderSegment || defaultRenderSegment,
-      renderTableHeaderCell: this.props.renderTableHeaderCell || defaultRenderTableHeaderCell,
-      renderRowHeaderCell: this.props.renderRowHeaderCell || defaultRenderRowHeaderCell
-    };
-  }
-  render() {
+    const headerColumnWidth = this.props.headerColumnWidth || 20;
+    const bodyColumnWidth = 100 - (this.props.headerColumnWidth || 20);
     return (
       <Provider value={{
-        view: this.state.view
+        view: this.props.view
       }}>
         <div className="awesome-calendar">
           <CalendarWrapper>
             {/* header */}
             <Row
               headerColumnText={this.props.headerColumnText}
-              headerColumnWidth={this.state.headerColumnWidth}
-              bodyColumnWidth={this.state.bodyColumnWidth}
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              weekStartAndEndDates={this.state.weekStartAndEndDates}
+              headerColumnWidth={headerColumnWidth}
+              bodyColumnWidth={bodyColumnWidth}
+              startDate={startDate}
+              endDate={endDate}
+              weekStartAndEndDates={weekStartAndEndDates}
               isHeader={true}
-              renderTableHeaderCell={this.state.renderTableHeaderCell}
+              renderTableHeaderCell={this.props.renderTableHeaderCell}
             />
             {/* body */}
             {
@@ -102,15 +79,15 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
                 return <Row
                   isHeader={false}
                   headerColumnText={key}
-                  headerColumnWidth={this.state.headerColumnWidth}
-                  bodyColumnWidth={this.state.bodyColumnWidth}
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  weekStartAndEndDates={this.state.weekStartAndEndDates}
+                  headerColumnWidth={headerColumnWidth}
+                  bodyColumnWidth={bodyColumnWidth}
+                  startDate={startDate}
+                  endDate={endDate}
+                  weekStartAndEndDates={weekStartAndEndDates}
                   data={this.props.data[key]}
                   key={key}
-                  renderSegment={this.state.renderSegment}
-                  renderRowHeaderCell={this.state.renderRowHeaderCell}
+                  renderSegment={this.props.renderSegment}
+                  renderRowHeaderCell={this.props.renderRowHeaderCell}
                 />;
               })
             }
@@ -119,4 +96,15 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
       </Provider>
     );
   }
+  static defaultProps = {
+    startYear: (new Date()).getFullYear(),
+    startMonth: (new Date()).getMonth(),
+    view: defaultContextValues.view,
+    renderSegment: defaultRenderSegment,
+    renderTableHeaderCell: defaultRenderTableHeaderCell,
+    renderRowHeaderCell: defaultRenderRowHeaderCell,
+    headerColumnWidth: 20,
+    startDayOfMonth: 1,
+    headerColumnText: ''
+  };
 }
