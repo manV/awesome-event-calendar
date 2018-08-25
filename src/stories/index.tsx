@@ -55,6 +55,20 @@ storiesOf('Calendar', module)
       startMonth={0}
       startDayOfMonth={1}
       startYear={2018}
+      segmentStyle={(rowIndex) => {
+        return {
+          borderRadius: 50,
+          backgroundColor: rowIndex % 2 !== 0 ? '#777b7d' : '#0a92db',
+          color: '#fff',
+          fontSize: '12px',
+          padding: '8px'
+        };
+      }}
+      rowStyle={(index) => {
+        return {
+          backgroundColor: index >= 0 && index % 2 !== 0 ? '#e9f3f5' : '#fff'
+        };
+      }}
       renderSegment={(segmentData) => (
         <span style={{
           flex: 1,
