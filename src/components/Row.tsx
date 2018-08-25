@@ -61,7 +61,7 @@ export default class Header extends React.Component<IRowProps, {
   }
   render() {
     return (
-      <RowWrapper className="row-wrapper">
+      <RowWrapper style={this.props.rowStyle(this.props.index)} className="row-wrapper">
         <Cell
           width={this.state.headerCellWidth}
           index={-1}
@@ -97,7 +97,7 @@ export default class Header extends React.Component<IRowProps, {
                     {
                       rowData.map((segmentData, i) => {
                         return (
-                          <RowSegment key={i} style={{
+                          <RowSegment key={i} style={{...{
                             flexBasis: `${segmentData.width}%`,
                             maxWidth: `${segmentData.width}%`,
                             backgroundColor: `${segmentData.isFake ? 'transparent' : '#3174ad'}`,
@@ -105,7 +105,7 @@ export default class Header extends React.Component<IRowProps, {
                             borderBottomLeftRadius: `${segmentData.clipLeft ? '0' : '10px'}`,
                             borderTopRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
                             borderBottomRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
-                          }}>
+                          }, ...(() => (segmentData.isFake ? {} : this.props.segmentStyle(this.props.index)))()}}>
                             {
                               segmentData.isFake ?
                                 ' ' : (

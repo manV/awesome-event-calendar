@@ -61,9 +61,10 @@ export default class Calendar extends React.Component<ICalendarProps> {
         view: this.props.view
       }}>
         <div className="awesome-calendar">
-          <CalendarWrapper>
+          <CalendarWrapper style={this.props.containerStyle}>
             {/* header */}
             <Row
+              index={-1}
               headerColumnText={this.props.headerColumnText}
               headerColumnWidth={headerColumnWidth}
               bodyColumnWidth={bodyColumnWidth}
@@ -72,11 +73,14 @@ export default class Calendar extends React.Component<ICalendarProps> {
               weekStartAndEndDates={weekStartAndEndDates}
               isHeader={true}
               renderTableHeaderCell={this.props.renderTableHeaderCell}
+              rowStyle={this.props.rowStyle}
+              segmentStyle={this.props.segmentStyle}
             />
             {/* body */}
             {
-              Object.keys(this.props.data).map((key) => {
+              Object.keys(this.props.data).map((key, index) => {
                 return <Row
+                  index={index}
                   isHeader={false}
                   headerColumnText={key}
                   headerColumnWidth={headerColumnWidth}
@@ -85,9 +89,11 @@ export default class Calendar extends React.Component<ICalendarProps> {
                   endDate={endDate}
                   weekStartAndEndDates={weekStartAndEndDates}
                   data={this.props.data[key]}
-                  key={key}
+                  key={index}
                   renderSegment={this.props.renderSegment}
                   renderRowHeaderCell={this.props.renderRowHeaderCell}
+                  rowStyle={this.props.rowStyle}
+                  segmentStyle={this.props.segmentStyle}
                 />;
               })
             }
@@ -105,6 +111,9 @@ export default class Calendar extends React.Component<ICalendarProps> {
     renderRowHeaderCell: defaultRenderRowHeaderCell,
     headerColumnWidth: 20,
     startDayOfMonth: 1,
-    headerColumnText: ''
+    headerColumnText: '',
+    containerStyle: {},
+    rowStyle: () => {/* no-op */},
+    segmentStyle: () => {/* no-op */}
   };
 }

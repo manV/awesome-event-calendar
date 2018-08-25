@@ -22,9 +22,13 @@ export interface ICalendarProps {
   renderSegment(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
   renderRowHeaderCell(text: string): JSX.Element;
   renderTableHeaderCell(index: number, cellInterval: ITimeInterval): JSX.Element;
+  rowStyle: (index: number) => React.CSSProperties;
+  segmentStyle: (rowIndex: number) => React.CSSProperties;
+  containerStyle: React.CSSProperties;
 }
 
 export interface IRowProps {
+  index: number;
   headerColumnWidth: number;
   bodyColumnWidth: number;
   startDate: string;
@@ -40,6 +44,8 @@ export interface IRowProps {
   renderSegment?(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
   renderRowHeaderCell?(text: string): JSX.Element;
   renderTableHeaderCell?(index: number, cellInterval: ITimeInterval): JSX.Element;
+  rowStyle: (index: number) => React.CSSProperties;
+  segmentStyle: (rowIndex: number) => React.CSSProperties;
 }
 
 export interface IData {
