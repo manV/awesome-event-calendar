@@ -125,6 +125,19 @@ export const groupNonConflictingEvents = (data: Array<{
   return result;
 };
 
+const filterEventsOutsideCalendarRange = (
+  row: Array<{
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    metadata: any;
+  }>,
+  calendarStartDate: moment.Moment,
+  calendarEndDate: moment.Moment) => {
+  return row.filter((event) => {
+    return (calendarStartDate.isSameOrBefore(event.endDate) && calendarEndDate.isSameOrAfter(event.startDate));
+  });
+};
+
 export const fillDataWithFakeEvents = (
   calendarStartDateStr: string,
   calendarEndDateStr: string,
@@ -155,7 +168,7 @@ export const fillDataWithFakeEvents = (
     metadata: any;
   }>> = [];
   for (let i = 0; i < data.length; i++) {
-    const row = data[i];
+    const row = filterEventsOutsideCalendarRange(data[i], calendarStartDate, calendarEndDate);
     result.push([]);
     for (let j = 0; j < row.length; j++) {
       const event = row[j];

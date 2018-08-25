@@ -402,4 +402,35 @@ describe('utils::fillDataWithFakeEvents', () => {
       ]
     ]);
   });
+  it('should ignore if event is outside of calendar range', () => {
+    expect(fillDataWithFakeEvents(
+      '2018-07-01',
+      '2018-09-06',
+      [
+        [{
+          startDate: moment.utc('2017-11-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2017-11-07', 'YYYY-MM-DD'),
+          metadata: {}
+        }, {
+          startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
+          metadata: {}
+        }, {
+          startDate: moment.utc('2018-11-01', 'YYYY-MM-DD'),
+          endDate: moment.utc('2018-11-07', 'YYYY-MM-DD'),
+          metadata: {}
+        }]
+      ]
+    )).toEqual([
+      [
+        {
+          clipLeft: true, clipRight: false,
+          endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
+          isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
+          width: 10.294117647058824,
+          metadata: {}
+        }
+      ]
+    ]);
+  });
 });
