@@ -11,6 +11,10 @@ export interface ITimeInterval {
   endDate: Moment;
 }
 
+export interface IRowData {
+  [key: string]: ISegmentData[][];
+}
+
 export interface ICalendarProps {
   view: CalendarDefaultViewEnum;
   headerColumnWidth: number;
@@ -18,34 +22,12 @@ export interface ICalendarProps {
   startYear: number;
   startDayOfMonth: number;
   data: IData;
-  headerColumnText: string;
-  renderSegment(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
-  renderRowHeaderCell(text: string): JSX.Element;
-  renderTableHeaderCell(index: number, cellInterval: ITimeInterval): JSX.Element;
-  rowStyle: (index: number) => React.CSSProperties;
-  segmentStyle: (rowIndex: number) => React.CSSProperties;
-  containerStyle: React.CSSProperties;
-}
-
-export interface IRowProps {
-  index: number;
-  headerColumnWidth: number;
-  bodyColumnWidth: number;
-  startDate: string;
-  endDate: string;
-  weekStartAndEndDates: ITimeInterval[];
-  data?: Array<{
-    startDate: string;
-    endDate: string;
-    metadata: any;
-  }>;
-  headerColumnText?: string;
-  isHeader: boolean;
-  renderSegment?(segmentData: ISegmentData, eventInterval: ITimeInterval): JSX.Element;
-  renderRowHeaderCell?(text: string): JSX.Element;
-  renderTableHeaderCell?(index: number, cellInterval: ITimeInterval): JSX.Element;
-  rowStyle: (index: number) => React.CSSProperties;
-  segmentStyle: (rowIndex: number) => React.CSSProperties;
+  children: (
+    renderProps: {
+      weekStartAndEndDates: ITimeInterval[];
+      rowsData: IRowData
+    }
+  ) => JSX.Element;
 }
 
 export interface IData {
