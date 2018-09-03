@@ -113,7 +113,7 @@ export class CalendarWithData extends React.Component {
       }
     }, {
       startDate: '2018-01-01',
-      endDate: '2018-01-05',
+      endDate: '2018-01-04',
       metadata: {
         name: 'blah blah blah lorem ipsum'
       }
@@ -125,6 +125,24 @@ export class CalendarWithData extends React.Component {
       }
     }]
   };
+  onRowClick = (e: any, weekStartAndEndDates: ITimeInterval[]) => {
+    let bounds: any;
+    if (e.target.attributes.class.value.includes('row')) {
+      bounds = e.target.getBoundingClientRect();
+    } else {
+      bounds = e.target.parentNode.getBoundingClientRect();
+    }
+    const x = e.clientX - bounds.left;
+    const colPxWidth = bounds.width / weekStartAndEndDates.length;
+    const index = Math.floor(x / colPxWidth);
+    alert(index);
+  }
+  onSegmentClick = (segmentData: ISegmentData, e: React.MouseEvent<HTMLElement>) => {
+    if (!segmentData.isFake) {
+      e.stopPropagation();
+      alert('event clicked.');
+    }
+  }
   renderHeader = (weekStartAndEndDates: ITimeInterval[]): JSX.Element => {
     const bodyColumnWidth = this.getColumnWidth(weekStartAndEndDates.length);
     return (
@@ -175,7 +193,8 @@ export class CalendarWithData extends React.Component {
             {
               rowData.map((subRowData, index) => this.renderSubRow({
                 subRowData,
-                subRowIndex: index
+                subRowIndex: index,
+                weekStartAndEndDates
               }))
             }
           </RowContent>
@@ -185,13 +204,15 @@ export class CalendarWithData extends React.Component {
   }
   renderSubRow = ({
     subRowData,
-    subRowIndex
+    subRowIndex,
+    weekStartAndEndDates
   }: {
     subRowData: ISegmentData[];
     subRowIndex: number;
+    weekStartAndEndDates: ITimeInterval[]
   }) => {
     return (
-      <Row>
+      <Row className="row" onClick={(e) => this.onRowClick(e, weekStartAndEndDates)}>
         {
           subRowData.map((segmentData, index) => this.renderSegment({
             segmentData, index
@@ -215,7 +236,7 @@ export class CalendarWithData extends React.Component {
       borderBottomLeftRadius: `${segmentData.clipLeft ? '0' : '10px'}`,
       borderTopRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
       borderBottomRightRadius: `${segmentData.clipRight ? '0px' : '10px'}`,
-    }}>
+    }} onClick={(e) => this.onSegmentClick(segmentData, e)}>
       {segmentData.isFake ? '' : segmentData.metadata.name}
     </RowSegment>;
   }
