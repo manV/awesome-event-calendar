@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./lib",
-    "rootDir": "./src",
+    "rootDirs": ["./src", "./stories"],
     "target": "es5",
     "module": "commonjs",
     "noImplicitAny": true,

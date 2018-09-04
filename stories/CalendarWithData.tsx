@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Calendar from './../Calendar';
-import { CalendarDefaultViewEnum, ITimeInterval, ISegmentData } from '../types';
-import styled from './../styled';
+import Calendar from '../src/Calendar';
+import { CalendarDefaultViewEnum, ITimeInterval, ISegmentData } from '../src/types';
+import styled from './styled';
 
 const CalendarWrapper = styled.div`
   position: relative;
