@@ -194,7 +194,7 @@ export const fillDataWithFakeEvents = (
             width: (Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) + 1) * dayWidth,
             isFake: false,
             clipLeft: false,
-            clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0,
+            clipRight: event.endDate.diff(calendarEndDate, 'days') > 0,
             metadata: event.metadata
           });
         } else {
@@ -204,7 +204,7 @@ export const fillDataWithFakeEvents = (
             width: (Math.abs(startDateForWidth.diff(endDateForWidth, 'days')) + 1) * dayWidth,
             isFake: false,
             clipLeft: true,
-            clipRight: event.endDate.diff(calendarEndDate, 'days') >= 0,
+            clipRight: event.endDate.diff(calendarEndDate, 'days') > 0,
             metadata: event.metadata
           });
         }
@@ -229,7 +229,7 @@ export const fillDataWithFakeEvents = (
           width: (Math.abs(event.startDate.diff(endDateForWidth, 'days')) + 1) * dayWidth,
           isFake: false,
           clipLeft: false,
-          clipRight: event.endDate.diff(calendarEndDate) >= 0,
+          clipRight: event.endDate.diff(calendarEndDate) > 0,
           metadata: event.metadata
         });
       }
