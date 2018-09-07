@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as types from './types';
 import { Provider, defaultContextValues } from './context';
 
 import {
@@ -9,11 +10,7 @@ import {
   groupNonConflictingEvents
 } from './utils/time';
 
-import {
-  ICalendarProps, IRowData
-} from './types';
-
-export default class Calendar extends React.Component<ICalendarProps> {
+export default class Calendar extends React.Component<types.ICalendarProps> {
   render() {
     const {
       startDate,
@@ -27,7 +24,7 @@ export default class Calendar extends React.Component<ICalendarProps> {
     const numberOfWeeks = getNumberOfWeeksBetweenDates(startDate, endDate);
     const weekStartAndEndDates = getColumnWeekStartAndEndDates({startDate, numberOfWeeks});
     const rowKeys = Object.keys(this.props.data);
-    const rowsData: IRowData = {};
+    const rowsData: types.IRowData = {};
     rowKeys.forEach((rowKey) => {
       const rowData = this.props.data[rowKey];
       rowsData[rowKey] = fillDataWithFakeEvents(startDate, endDate, groupNonConflictingEvents(rowData));
