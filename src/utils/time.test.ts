@@ -1,100 +1,115 @@
 import {
   getNumberOfWeeksBetweenDates,
   getStartAndEndDates,
-  getColumnWeekStartAndEndDates,
+  getColumnStartAndEndDates,
   groupNonConflictingEvents,
   fillDataWithFakeEvents
 } from './time';
 
 import * as moment from 'moment';
+import { ColumnDurationEnum } from '../types';
+const dateFormatter = 'YYYY-MM-DD';
 
-import {
-  CalendarDefaultViewEnum
-} from '../types';
+// import {
+//   ColumnDurationEnum
+// } from '../types';
 
 describe('utils::getNumberOfWeeksBetweenDates', () => {
   test('should return valid number of weeks between dates with one week', () => {
-    expect(getNumberOfWeeksBetweenDates('2018-01-01', '2018-01-07')).toBe(1);
+    expect(
+      getNumberOfWeeksBetweenDates(
+        moment.utc('2018-01-01', dateFormatter),
+        moment.utc('2018-01-07', dateFormatter)
+      )
+    ).toBe(1);
   });
   test('should return valid number of weeks between dates with 9 days difference', () => {
-    expect(getNumberOfWeeksBetweenDates('2018-01-01', '2018-01-10')).toBe(2);
+    expect(
+      getNumberOfWeeksBetweenDates(
+        moment.utc('2018-01-01', dateFormatter),
+        moment.utc('2018-01-10', dateFormatter)
+      )
+    ).toBe(2);
   });
 });
 
 describe('utils::getStartAndEndDates', () => {
-  test('should return valid start/end dates in case of month view 1', () => {
-    expect(getStartAndEndDates({
-      dayOfMonth: 1,
-      month: 0,
-      year: 2018,
-      view: CalendarDefaultViewEnum.month
-    })).toEqual({
-      endDate: '2018-02-03',
-      startDate: '2017-12-31'
-    });
-  });
-  test('should return valid start/end dates in case of month view 2', () => {
-    expect(getStartAndEndDates({
-      dayOfMonth: 1,
-      month: 1,
-      year: 2018,
-      view: CalendarDefaultViewEnum.month
-    })).toEqual({
-      startDate: '2018-01-28',
-      endDate: '2018-03-03'
-    });
-  });
-  test('should return valid start/end dates in case of quarter view 1', () => {
-    expect(getStartAndEndDates({
-      dayOfMonth: 1,
-      month: 0,
-      year: 2018,
-      view: CalendarDefaultViewEnum.quarter
-    })).toEqual({
-      startDate: '2017-12-31',
-      endDate: '2018-03-31'
-    });
-  });
-  test('should return valid start/end dates in case of quarter view 2', () => {
-    expect(getStartAndEndDates({
-      dayOfMonth: 1,
-      month: 3,
-      year: 2018,
-      view: CalendarDefaultViewEnum.quarter
-    })).toEqual({
-      startDate: '2018-04-01',
-      endDate: '2018-06-30'
-    });
-  });
-  test('should return valid start/end dates in case of day view 1', () => {
-    expect(getStartAndEndDates({
-      dayOfMonth: 1,
-      month: 0,
-      year: 2018,
-      view: CalendarDefaultViewEnum.day
-    })).toEqual({
-      startDate: '2017-12-31',
-      endDate: '2018-01-06'
-    });
-  });
-  test('should return valid start/end dates in case of day view 2', () => {
-    expect(getStartAndEndDates({
-      dayOfMonth: 30,
-      month: 0,
-      year: 2018,
-      view: CalendarDefaultViewEnum.day
-    })).toEqual({
-      startDate: '2018-01-28',
-      endDate: '2018-02-03'
+  const testInputs = [{
+    caseName: 'should return valid start/end dates in case of month view 1',
+    columnDuration: ColumnDurationEnum.week,
+    startDate: '2018-01-01',
+    endDate: '2018-01-31',
+    result: {
+      endDate: '2018-02-03T00:00:00.000Z',
+      startDate: '2017-12-31T00:00:00.000Z'
+    }
+  }, {
+    caseName: 'should return valid start/end dates in case of month view 2',
+    columnDuration: ColumnDurationEnum.week,
+    startDate: '2018-02-01',
+    endDate: '2018-02-28',
+    result: {
+      endDate: '2018-03-03T00:00:00.000Z',
+      startDate: '2018-01-28T00:00:00.000Z'
+    }
+  }, {
+    caseName: 'should return valid start/end dates in case of quarter view 1',
+    columnDuration: ColumnDurationEnum.week,
+    startDate: '2018-01-01',
+    endDate: '2018-03-31',
+    result: {
+      startDate: '2017-12-31T00:00:00.000Z',
+      endDate: '2018-03-31T00:00:00.000Z'
+    }
+  }, {
+    caseName: 'should return valid start/end dates in case of quarter view 2',
+    columnDuration: ColumnDurationEnum.week,
+    startDate: '2018-04-01',
+    endDate: '2018-06-30',
+    result: {
+      startDate: '2018-04-01T00:00:00.000Z',
+      endDate: '2018-06-30T00:00:00.000Z'
+    }
+  }, {
+    caseName: 'should return valid start/end dates in case of day view 1',
+    columnDuration: ColumnDurationEnum.day,
+    startDate: '2017-12-31',
+    endDate: '2018-01-06',
+    result: {
+      startDate: '2017-12-31T00:00:00.000Z',
+      endDate: '2018-01-06T00:00:00.000Z'
+    }
+  }, {
+    caseName: 'should return valid start/end dates in case of day view 2',
+    columnDuration: ColumnDurationEnum.day,
+    startDate: '2018-01-28',
+    endDate: '2018-02-03',
+    result: {
+      startDate: '2018-01-28T00:00:00.000Z',
+      endDate: '2018-02-03T00:00:00.000Z'
+    }
+  }];
+  testInputs.forEach((testInput) => {
+    test(testInput.caseName, () => {
+      const startAndEndDates = getStartAndEndDates({
+        startDate: moment.utc(testInput.startDate, dateFormatter),
+        endDate: moment.utc(testInput.endDate, dateFormatter),
+        columnDuration: testInput.columnDuration
+      });
+      expect({
+        startDate: startAndEndDates.startDate.toISOString(),
+        endDate: startAndEndDates.endDate.toISOString()
+      }).toEqual(testInput.result);
     });
   });
 });
 
 describe('utils::getColumnWeekStartAndEndDates', () => {
   test('should return correct value in case of multiple weeks', () => {
-    expect(getColumnWeekStartAndEndDates({
-      numberOfWeeks: 5,
-      startDate: '2018-01-01'
+    expect(getColumnStartAndEndDates({
+      startDate: moment.utc('2017-12-31', dateFormatter),
+      endDate: moment.utc('2018-02-03', dateFormatter),
+      columnDuration: ColumnDurationEnum.week
     }).map((r) => ({
       startDate: r.startDate.toISOString(),
       endDate: r.endDate.toISOString()
@@ -118,9 +133,10 @@ describe('utils::getColumnWeekStartAndEndDates', () => {
     );
   });
   test('should return correct value in case of single week', () => {
-    expect(getColumnWeekStartAndEndDates({
-      numberOfWeeks: 1,
-      startDate: '2018-01-01'
+    expect(getColumnStartAndEndDates({
+      startDate: moment.utc('2017-12-31', dateFormatter),
+      endDate: moment.utc('2018-01-06', dateFormatter),
+      columnDuration: ColumnDurationEnum.day
     }).map((r) => ({
       startDate: r.startDate.toISOString(),
       endDate: r.endDate.toISOString()
@@ -202,8 +218,8 @@ describe('utils::groupNonConflictingEvents', () => {
 describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting at calendar start date', () => {
     expect(fillDataWithFakeEvents(
-      '2018-07-01',
-      '2018-09-06',
+      moment.utc('2018-07-01', dateFormatter),
+      moment.utc('2018-09-06', dateFormatter),
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
@@ -226,8 +242,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting at calendar ' +
   'start date and ending at calendar end date', () => {
     expect(fillDataWithFakeEvents(
-      '2018-07-01',
-      '2018-09-06',
+      moment.utc('2018-07-01', dateFormatter),
+      moment.utc('2018-09-06', dateFormatter),
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
@@ -250,8 +266,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting before calendar ' +
   'start date and ending at calendar end date', () => {
     expect(fillDataWithFakeEvents(
-      '2018-07-01',
-      '2018-09-06',
+      moment.utc('2018-07-01', dateFormatter),
+      moment.utc('2018-09-06', dateFormatter),
       [
         [{
           startDate: moment.utc('2018-06-25', 'YYYY-MM-DD'),
@@ -274,8 +290,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   it('should work when there is only one event starting at calendar ' +
   'start date and ending after calendar end date', () => {
     expect(fillDataWithFakeEvents(
-      '2018-07-01',
-      '2018-09-06',
+      moment.utc('2018-07-01', dateFormatter),
+      moment.utc('2018-09-06', dateFormatter),
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
@@ -297,8 +313,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   });
   it('should fill rows with fake events correctly', () => {
     expect(fillDataWithFakeEvents(
-      '2018-07-01',
-      '2018-09-06',
+      moment.utc('2018-07-01', dateFormatter),
+      moment.utc('2018-09-06', dateFormatter),
       [
         [{
           startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
@@ -404,8 +420,8 @@ describe('utils::fillDataWithFakeEvents', () => {
   });
   it('should ignore if event is outside of calendar range', () => {
     expect(fillDataWithFakeEvents(
-      '2018-07-01',
-      '2018-09-06',
+      moment.utc('2018-07-01', dateFormatter),
+      moment.utc('2018-09-06', dateFormatter),
       [
         [{
           startDate: moment.utc('2017-11-01', 'YYYY-MM-DD'),

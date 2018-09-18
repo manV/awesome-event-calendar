@@ -1,9 +1,8 @@
 import { Moment } from 'moment';
 
-export enum CalendarDefaultViewEnum {
-  month= 'month',
-  quarter= 'quarter',
-  day= 'day'
+export enum ColumnDurationEnum {
+  week = 'week',
+  day = 'day'
 }
 
 export interface ITimeInterval {
@@ -16,15 +15,13 @@ export interface IRowData {
 }
 
 export interface ICalendarProps {
-  view: CalendarDefaultViewEnum;
-  headerColumnWidth: number;
-  startMonth: number;
-  startYear: number;
-  startDayOfMonth: number;
+  columnDuration: ColumnDurationEnum;
+  startDate: Moment;
+  endDate: Moment;
   data: IData;
   children: (
     renderProps: {
-      weekStartAndEndDates: ITimeInterval[];
+      columnStartAndEndDates: ITimeInterval[];
       rowsData: IRowData
     }
   ) => JSX.Element;
@@ -39,7 +36,7 @@ export interface IData {
 }
 
 export interface IContext {
-  view: CalendarDefaultViewEnum;
+  columnDuration: ColumnDurationEnum;
 }
 
 export interface ISegmentData {

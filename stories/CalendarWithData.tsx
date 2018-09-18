@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Calendar from '../src/Calendar';
-import { CalendarDefaultViewEnum, ITimeInterval, ISegmentData } from '../src/types';
+import { ColumnDurationEnum, ITimeInterval, ISegmentData } from '../src/types';
 import styled from './styled';
+import * as moment from 'moment';
 
 const CalendarWrapper = styled.div`
   position: relative;
@@ -243,16 +244,15 @@ export class CalendarWithData extends React.Component {
   render() {
     return (
       <Calendar
-        view={CalendarDefaultViewEnum.day}
-        startMonth={0}
-        startDayOfMonth={1}
-        startYear={2018}
+        columnDuration={ColumnDurationEnum.day}
+        startDate={moment.utc('2017-12-31', 'YYYY-MM-DD')}
+        endDate={moment.utc('2018-01-06', 'YYYY-MM-DD')}
         data={this.data}
       >
-        {({ rowsData, weekStartAndEndDates }) => {
+        {({ rowsData, columnStartAndEndDates }) => {
           return (
             <CalendarWrapper>
-              { this.renderHeader(weekStartAndEndDates) }
+              { this.renderHeader(columnStartAndEndDates) }
               {
                 Object
                   .keys(rowsData)
@@ -262,7 +262,7 @@ export class CalendarWithData extends React.Component {
                         key,
                         rowData: rowsData[key],
                         rowIndex: index,
-                        weekStartAndEndDates
+                        weekStartAndEndDates: columnStartAndEndDates
                       });
                   })
               }

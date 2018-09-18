@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { IContext, CalendarDefaultViewEnum } from './types';
+import { IContext, ColumnDurationEnum } from './types';
 
 export const defaultContextValues: IContext = {
-  view: CalendarDefaultViewEnum.month
+  columnDuration: ColumnDurationEnum.week
 };
 
 export const {

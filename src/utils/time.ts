@@ -1,57 +1,46 @@
 import * as moment from 'moment';
-import { CalendarDefaultViewEnum } from '../types';
+import { ColumnDurationEnum } from '../types';
 
 export const dateFormatter = 'YYYY-MM-DD';
 
-export const getNumberOfWeeksBetweenDates = (startDate: string, endDate: string) => {
-  const diffInDays = moment.utc(endDate, dateFormatter).diff(moment.utc(startDate, dateFormatter), 'days') + 1;
+export const getNumberOfWeeksBetweenDates = (startDate: moment.Moment, endDate: moment.Moment) => {
+  const diffInDays = endDate.diff(startDate, 'days') + 1;
   return Math.ceil(diffInDays / 7);
 };
 
 export const getStartAndEndDates = ({
-  view, dayOfMonth, month, year
+  startDate,
+  endDate,
+  columnDuration
 }: {
-  view: CalendarDefaultViewEnum
-  dayOfMonth: number
-  month: number,
-  year: number,
+  startDate: moment.Moment;
+  endDate: moment.Moment;
+  columnDuration: ColumnDurationEnum
 }): {
-  startDate: string,
-  endDate: string
-} => {
-  let startDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayOfMonth).padStart(2, '0')}`;
-  if (view === CalendarDefaultViewEnum.day) {
-    startDate = moment.utc(startDate, dateFormatter).startOf('week').format(dateFormatter);
-  }
-  const startDateMoment = moment.utc(startDate, dateFormatter);
-  let endDate = '';
-  if (view === CalendarDefaultViewEnum.month) {
-    endDate = startDateMoment.endOf('month').endOf('week').format(dateFormatter);
-  } else if (view === CalendarDefaultViewEnum.quarter) {
-    endDate = startDateMoment
-    .add(2, 'month')
-    .endOf('month')
-    .endOf('week')
-    .format(dateFormatter);
-  } else {
-    endDate = moment.utc(startDate, dateFormatter).add(6, 'days').format(dateFormatter);
-  }
-  return {
-    startDate: moment.utc(startDate, dateFormatter).startOf('week').format(dateFormatter),
-    endDate
-  };
-};
+  startDate: moment.Moment;
+  endDate: moment.Moment;
+} => ({
+  startDate: moment.utc(startDate).startOf(columnDuration),
+  endDate: moment.utc(endDate).endOf(columnDuration).startOf('day')
+});
 
-export const getColumnWeekStartAndEndDates = ({
-  startDate, numberOfWeeks
-}: {startDate: string, numberOfWeeks: number}) => {
+export const getColumnStartAndEndDates = ({
+  startDate,
+  endDate,
+  columnDuration
+}: {
+  startDate: moment.Moment;
+  endDate: moment.Moment;
+  columnDuration: ColumnDurationEnum;
+}) => {
   const result: Array<{
     startDate: moment.Moment;
     endDate: moment.Moment;
   }> = [];
-  let currDate = moment.utc(startDate, dateFormatter).startOf('week');
-  if (numberOfWeeks === 1) {
-    for (let i = 0; i < 7; i++) {
+  if (columnDuration === ColumnDurationEnum.day) {
+    let currDate = startDate.clone();
+    const diff = endDate.diff(startDate, 'days') + 1;
+    for (let i = 0; i < diff; i++) {
       const columnStartDate = currDate.clone();
       const columnEndDate = currDate.clone();
       currDate = currDate.add(1, 'day');
@@ -61,6 +50,8 @@ export const getColumnWeekStartAndEndDates = ({
       });
     }
   } else {
+    let currDate = startDate.clone();
+    const numberOfWeeks = getNumberOfWeeksBetweenDates(startDate, endDate);
     for (let i = 0; i < numberOfWeeks; i++) {
       const weekStartDate = currDate.clone();
       currDate = currDate.add(6, 'days');
@@ -139,8 +130,8 @@ const filterEventsOutsideCalendarRange = (
 };
 
 export const fillDataWithFakeEvents = (
-  calendarStartDateStr: string,
-  calendarEndDateStr: string,
+  calendarStartDate: moment.Moment,
+  calendarEndDate: moment.Moment,
   data: Array<Array<{
     startDate: moment.Moment;
     endDate: moment.Moment;
@@ -155,8 +146,6 @@ export const fillDataWithFakeEvents = (
   clipRight: boolean;
   clipLeft: boolean;
 }>> => {
-  const calendarStartDate = moment.utc(calendarStartDateStr, dateFormatter);
-  const calendarEndDate = moment.utc(calendarEndDateStr, dateFormatter);
   const dayWidth = 100 / (Math.abs(calendarStartDate.diff(calendarEndDate, 'days')) + 1);
   const result: Array<Array<{
     startDate: moment.Moment;

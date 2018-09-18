@@ -1,11 +1,11 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import * as types from './types';
 import { Provider, defaultContextValues } from './context';
 
 import {
   getStartAndEndDates,
-  getNumberOfWeeksBetweenDates,
-  getColumnWeekStartAndEndDates,
+  getColumnStartAndEndDates,
   fillDataWithFakeEvents,
   groupNonConflictingEvents
 } from './utils/time';
@@ -16,13 +16,15 @@ export default class Calendar extends React.Component<types.ICalendarProps> {
       startDate,
       endDate
     } = getStartAndEndDates({
-      view: this.props.view,
-      dayOfMonth: this.props.startDayOfMonth,
-      month: this.props.startMonth,
-      year: this.props.startYear
+      startDate: this.props.startDate,
+      endDate: this.props.endDate,
+      columnDuration: this.props.columnDuration
     });
-    const numberOfWeeks = getNumberOfWeeksBetweenDates(startDate, endDate);
-    const weekStartAndEndDates = getColumnWeekStartAndEndDates({startDate, numberOfWeeks});
+    const columnStartAndEndDates = getColumnStartAndEndDates({
+      startDate,
+      endDate,
+      columnDuration: this.props.columnDuration
+    });
     const rowKeys = Object.keys(this.props.data);
     const rowsData: types.IRowData = {};
     rowKeys.forEach((rowKey) => {
@@ -32,11 +34,11 @@ export default class Calendar extends React.Component<types.ICalendarProps> {
 
     return (
       <Provider value={{
-        view: this.props.view
+        columnDuration: this.props.columnDuration
       }}>
         {
           this.props.children({
-            weekStartAndEndDates,
+            columnStartAndEndDates,
             rowsData
           })
         }
@@ -44,10 +46,8 @@ export default class Calendar extends React.Component<types.ICalendarProps> {
     );
   }
   static defaultProps = {
-    startYear: (new Date()).getFullYear(),
-    startMonth: (new Date()).getMonth(),
-    view: defaultContextValues.view,
-    headerColumnWidth: 20,
-    startDayOfMonth: 1
+    startDate: moment.utc().startOf(defaultContextValues.columnDuration),
+    endDate: moment.utc().startOf(defaultContextValues.columnDuration).add(6, defaultContextValues.columnDuration),
+    columnDuration: defaultContextValues.columnDuration
   };
 }
