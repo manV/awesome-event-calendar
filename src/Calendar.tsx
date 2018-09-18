@@ -10,7 +10,7 @@ import {
   groupNonConflictingEvents
 } from './utils/time';
 
-export default class Calendar extends React.Component<types.ICalendarProps> {
+export default class Calendar<T> extends React.Component<types.ICalendarProps<T>> {
   render() {
     const {
       startDate,
@@ -26,7 +26,7 @@ export default class Calendar extends React.Component<types.ICalendarProps> {
       columnDuration: this.props.columnDuration
     });
     const rowKeys = Object.keys(this.props.data);
-    const rowsData: types.IRowData = {};
+    const rowsData: types.IRowData<T> = {};
     rowKeys.forEach((rowKey) => {
       const rowData = this.props.data[rowKey];
       rowsData[rowKey] = fillDataWithFakeEvents(startDate, endDate, groupNonConflictingEvents(rowData));

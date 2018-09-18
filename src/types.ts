@@ -10,28 +10,28 @@ export interface ITimeInterval {
   endDate: Moment;
 }
 
-export interface IRowData {
-  [key: string]: ISegmentData[][];
+export interface IRowData<T> {
+  [key: string]: Array<Array<ISegmentData<T>>>;
 }
 
-export interface ICalendarProps {
+export interface ICalendarProps<T> {
   columnDuration: ColumnDurationEnum;
   startDate: Moment;
   endDate: Moment;
-  data: IData;
+  data: IData<T>;
   children: (
     renderProps: {
       columnStartAndEndDates: ITimeInterval[];
-      rowsData: IRowData
+      rowsData: IRowData<T>
     }
   ) => JSX.Element;
 }
 
-export interface IData {
+export interface IData<T> {
   [key: string]: Array<{
     startDate: string;
     endDate: string;
-    metadata: any;
+    metadata: T;
   }>;
 }
 
@@ -39,11 +39,11 @@ export interface IContext {
   columnDuration: ColumnDurationEnum;
 }
 
-export interface ISegmentData {
+export interface ISegmentData<T> {
   startDate: Moment;
   endDate: Moment;
   width: number;
-  metadata: any;
+  metadata: T;
   isFake: boolean;
   clipRight: boolean;
   clipLeft: boolean;

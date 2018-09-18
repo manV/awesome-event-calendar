@@ -66,14 +66,14 @@ export const getColumnStartAndEndDates = ({
   return result;
 };
 
-export const groupNonConflictingEvents = (data: Array<{
+export const groupNonConflictingEvents = <T>(data: Array<{
   startDate: string;
   endDate: string;
-  metadata: any;
+  metadata: T;
 }>): Array<Array<{
   startDate: moment.Moment;
   endDate: moment.Moment;
-  metadata: any;
+  metadata: T;
 }>> => {
   const sortedData = data.sort((left, right) => {
     return moment.utc(left.startDate, dateFormatter).diff(moment.utc(right.startDate, dateFormatter));
@@ -81,7 +81,7 @@ export const groupNonConflictingEvents = (data: Array<{
   const result: Array<Array<{
     startDate: moment.Moment;
     endDate: moment.Moment;
-    metadata: any;
+    metadata: T;
   }>> = [[]];
   sortedData.forEach((event) => {
     const eventStartDate = moment.utc(event.startDate, dateFormatter);
@@ -116,11 +116,11 @@ export const groupNonConflictingEvents = (data: Array<{
   return result;
 };
 
-const filterEventsOutsideCalendarRange = (
+const filterEventsOutsideCalendarRange = <T>(
   row: Array<{
     startDate: moment.Moment;
     endDate: moment.Moment;
-    metadata: any;
+    metadata: T;
   }>,
   calendarStartDate: moment.Moment,
   calendarEndDate: moment.Moment) => {
@@ -129,19 +129,19 @@ const filterEventsOutsideCalendarRange = (
   });
 };
 
-export const fillDataWithFakeEvents = (
+export const fillDataWithFakeEvents = <T>(
   calendarStartDate: moment.Moment,
   calendarEndDate: moment.Moment,
   data: Array<Array<{
     startDate: moment.Moment;
     endDate: moment.Moment;
-    metadata: any;
+    metadata: T;
   }>>
 ): Array<Array<{
   startDate: moment.Moment;
   endDate: moment.Moment;
   width: number;
-  metadata: any;
+  metadata: T;
   isFake: boolean;
   clipRight: boolean;
   clipLeft: boolean;
@@ -154,7 +154,7 @@ export const fillDataWithFakeEvents = (
     isFake: boolean;
     clipRight: boolean;
     clipLeft: boolean;
-    metadata: any;
+    metadata: T;
   }>> = [];
   for (let i = 0; i < data.length; i++) {
     const row = filterEventsOutsideCalendarRange(data[i], calendarStartDate, calendarEndDate);

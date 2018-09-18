@@ -78,6 +78,10 @@ const RowSegment = styled.div`
   display: flex;
 `;
 
+interface IMetadata {
+  name: string;
+}
+
 export class CalendarWithData extends React.Component {
   state = {
     headerColumnWidth: 20,
@@ -138,7 +142,7 @@ export class CalendarWithData extends React.Component {
     const index = Math.floor(x / colPxWidth);
     alert(index);
   }
-  onSegmentClick = (segmentData: ISegmentData, e: React.MouseEvent<HTMLElement>) => {
+  onSegmentClick = (segmentData: ISegmentData<IMetadata>, e: React.MouseEvent<HTMLElement>) => {
     if (!segmentData.isFake) {
       e.stopPropagation();
       alert('event clicked.');
@@ -168,7 +172,7 @@ export class CalendarWithData extends React.Component {
     weekStartAndEndDates
   }: {
     key: string;
-    rowData: ISegmentData[][];
+    rowData: Array<Array<ISegmentData<IMetadata>>>;
     rowIndex: number;
     weekStartAndEndDates: ITimeInterval[]
   }): JSX.Element => {
@@ -208,7 +212,7 @@ export class CalendarWithData extends React.Component {
     subRowIndex,
     weekStartAndEndDates
   }: {
-    subRowData: ISegmentData[];
+    subRowData: Array<ISegmentData<IMetadata>>;
     subRowIndex: number;
     weekStartAndEndDates: ITimeInterval[]
   }) => {
@@ -226,7 +230,7 @@ export class CalendarWithData extends React.Component {
     segmentData,
     index
   }: {
-    segmentData: ISegmentData;
+    segmentData: ISegmentData<IMetadata>;
     index: number;
   }): JSX.Element => {
     return <RowSegment style={{
@@ -243,7 +247,7 @@ export class CalendarWithData extends React.Component {
   }
   render() {
     return (
-      <Calendar
+      <Calendar<IMetadata>
         columnDuration={ColumnDurationEnum.day}
         startDate={moment.utc('2017-12-31', 'YYYY-MM-DD')}
         endDate={moment.utc('2018-01-06', 'YYYY-MM-DD')}
