@@ -1,6 +1,6 @@
 {
   "name": "@mananv/arc",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A react calendar component with quarter/month/day view.",
   "homepage": "https://github.com/manV/awesome-event-calendar",
   "repository": {
