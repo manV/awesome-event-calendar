@@ -166,17 +166,19 @@ export const fillDataWithFakeEvents = <T>(
         const diff = calendarStartDate.diff(event.startDate, 'days');
         const startDateForWidth = event.startDate.isBefore(calendarStartDate) ? calendarStartDate : event.startDate;
         const endDateForWidth = event.endDate.isBefore(calendarEndDate) ? event.endDate : calendarEndDate;
-        if (diff < 0) {
-          // add fake div
-          result[i].push({
-            startDate: calendarStartDate,
-            endDate: event.startDate,
-            width: Math.abs(event.startDate.diff(calendarStartDate, 'days')) * dayWidth,
-            isFake: true,
-            clipLeft: false,
-            clipRight: false,
-            metadata: event.metadata
-          });
+        if (diff <= 0) {
+          if(diff < 0) {
+            // add fake div
+            result[i].push({
+              startDate: calendarStartDate,
+              endDate: event.startDate,
+              width: Math.abs(event.startDate.diff(calendarStartDate, 'days')) * dayWidth,
+              isFake: true,
+              clipLeft: false,
+              clipRight: false,
+              metadata: event.metadata
+            });
+          }
           result[i].push({
             startDate: event.startDate,
             endDate: event.endDate,

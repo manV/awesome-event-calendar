@@ -230,7 +230,7 @@ describe('utils::fillDataWithFakeEvents', () => {
     )).toEqual([
       [
         {
-          clipLeft: true, clipRight: false,
+          clipLeft: false, clipRight: false,
           endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
           width: 10.294117647058824,
@@ -254,7 +254,7 @@ describe('utils::fillDataWithFakeEvents', () => {
     )).toEqual([
       [
         {
-          clipLeft: true, clipRight: false,
+          clipLeft: false, clipRight: false,
           endDate: moment.utc('2018-09-06', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
           width: 100,
@@ -302,7 +302,7 @@ describe('utils::fillDataWithFakeEvents', () => {
     )).toEqual([
       [
         {
-          clipLeft: true, clipRight: true,
+          clipLeft: false, clipRight: true,
           endDate: moment.utc('2018-09-16', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
           width: 100,
@@ -342,7 +342,7 @@ describe('utils::fillDataWithFakeEvents', () => {
     )).toEqual([
       [
         {
-          clipLeft: true,
+          clipLeft: false,
           clipRight: false,
           endDate: moment.utc('2018-07-16', 'YYYY-MM-DD'),
           isFake: false,
@@ -440,7 +440,7 @@ describe('utils::fillDataWithFakeEvents', () => {
     )).toEqual([
       [
         {
-          clipLeft: true, clipRight: false,
+          clipLeft: false, clipRight: false,
           endDate: moment.utc('2018-07-07', 'YYYY-MM-DD'),
           isFake: false, startDate: moment.utc('2018-07-01', 'YYYY-MM-DD'),
           width: 10.294117647058824,
